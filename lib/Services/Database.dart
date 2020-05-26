@@ -3,18 +3,18 @@ import 'package:firebaseflutter2/Models/User.dart';
 
 class DatabaseService{
 
-final CollectionReference collection=Firestore.instance.collection("brews");
+final CollectionReference referance=Firestore.instance.collection('brews');
 final String uid;
 DatabaseService({this.uid});
 
-Future updateUserdata(String sugars,String name,int strength)async{
-  return await collection.document(uid).setData({
-    'sugars': sugars,
-    'name':name,
-    'strenght':strength,
+// Future updateUserdata(String sugars,String name,int strength)async{
+//   return await collection.document(uid).setData({
+//     'sugars': sugars,
+//     'name':name,
+//     'strenght':strength,
 
-  });
-}
+//   });
+// }
 
 UserData snapshotToUserdata(DocumentSnapshot snapshot){
   return UserData(
@@ -25,10 +25,12 @@ UserData snapshotToUserdata(DocumentSnapshot snapshot){
   );
 }
 
-
- Stream<UserData> get fetchUserData{
-    return  collection.document(uid).snapshots()
-    .map(snapshotToUserdata);
+Future<UserData> get fetchUserDoc async{
+  DocumentSnapshot qsnp=await referance.document('$uid').get();
+  return snapshotToUserdata(qsnp);
+  
 }
+
+
 
 }
