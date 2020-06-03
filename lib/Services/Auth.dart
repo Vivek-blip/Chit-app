@@ -17,17 +17,17 @@ class Authentication{
 }
 
   // Signin anonimously
-  Future signinaAnon()async{
-    try{
-      AuthResult result=await _auth.signInAnonymously();
-      FirebaseUser user=result.user;
-      await DatabaseService(uid: user.uid).updateUserdata("65", "VIVEK", 100);
-      return _userfromFirebase(user);
-    }catch(e){
-      print(e.toString());
-      return null;
-    }
-  }
+  // Future signinaAnon()async{
+  //   try{
+  //     AuthResult result=await _auth.signInAnonymously();
+  //     FirebaseUser user=result.user;
+  //     await DatabaseService(uid: user.uid).updateUserdata("65", "VIVEK", 100);
+  //     return _userfromFirebase(user);
+  //   }catch(e){
+  //     print(e.toString());
+  //     return null;
+  //   }
+  // }
 
   //Register with email and password
   Future signinWithEmailAndPsswd(String Email,String password)async{

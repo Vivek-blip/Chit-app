@@ -31,8 +31,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
         return Scaffold(
-
-
           appBar: AppBar(
             backgroundColor: Colors.blue[500],
             elevation: 10,
@@ -40,15 +38,6 @@ class _HomeState extends State<Home> {
             title: Text(AppbarTextSeletor(_currentIndex),style: TextStyle(
               fontSize: 28
             ),),
-            actions: <Widget>[
-              FlatButton.icon(
-                onPressed: ()async{
-                  await _auth.signout();
-                }
-              , icon: Icon(Icons.person),
-                label: Text("Logout"),
-              )
-            ],
           ),
           body: Container(
             decoration: BoxDecoration(

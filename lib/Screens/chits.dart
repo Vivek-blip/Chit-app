@@ -17,8 +17,8 @@ class _ChitsState extends State<Chits> {
   Widget build(BuildContext context) {
     final user=Provider.of<User>(context);
 
-    return StreamBuilder<UserData>(
-        stream: DatabaseService(uid:user.uid).fetchUserData,
+    return FutureBuilder<UserData>(
+        future: DatabaseService(uid:user.uid).fetchUserDoc,
         builder: (context, snapshot) {
         if(snapshot.data==null){
         return Loader();
@@ -68,13 +68,6 @@ class _ChitsState extends State<Chits> {
       ),
       Container(
       padding: EdgeInsets.fromLTRB(6, 6, 6, 0),
-//      decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),
-//      gradient: LinearGradient(
-//          colors: [Colors.green[300],Colors.blue[400]],
-//          begin: Alignment.topLeft,
-//          end: Alignment.bottomRight
-//      )
-//      ),
       height: 238,
       width: 280,
       child: Column(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Services/Auth.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:provider/provider.dart';
-import 'package:firebaseflutter2/Wrapper.dart';
+import 'package:firebaseflutter2/AuthScreens/Wrapper.dart';
 
 
 

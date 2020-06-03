@@ -4,12 +4,14 @@ import 'package:firebaseflutter2/Screens/Loading.dart';
 import 'package:firebaseflutter2/Services/Auth.dart';
 
 
-class signin extends StatefulWidget {
+class Signin extends StatefulWidget {
+  final Function refrsh;
+  Signin({this.refrsh});
   @override
-  _signinState createState() => _signinState();
+  _SigninState createState() => _SigninState();
 }
 
-class _signinState extends State<signin> {
+class _SigninState extends State<Signin> {
   final Authentication _auth=Authentication();
   final _formkey=GlobalKey<FormState>();
   bool load=false;
@@ -108,31 +110,54 @@ class _signinState extends State<signin> {
                           },
                         ),
                         SizedBox(height: 30),
-                        Container(
-                          height: 48,
-                          width: 180,
-                          child: RaisedButton(
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
-                            elevation: 5,
-                            color: Colors.red[300],
-                            child: Text("Sign-in",style: TextStyle(
-                                fontSize: 21,color: Colors.grey[400]
+                        Column(
+                          children: <Widget>[
+                            Container(
+                              height: 48,
+                              width: 180,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                elevation: 5,
+                                color: Colors.red[300],
+                                child: Text("Sign-in",style: TextStyle(
+                                    fontSize: 21,color: Colors.grey[100]
+                                ),),
+                                onPressed: ()async{
+                                  if(_formkey.currentState.validate()){
+                                    setState(() {
+                                      load=true;
+                                    });
+                                    dynamic result=await _auth.signinWithEmailAndPsswd(email, password);
+                                    if(result==null){
+                                      setState(() {
+                                        error="Please input valid credentials";
+                                        load=false;
+                                      });
+                                    }
+                                  }
+                                },
+                              ),
+                            ),
+                            SizedBox(
+                              height: 20,
+                              child: Text("Or",style: TextStyle(color: Colors.white,fontSize: 15),
                             ),),
-                            onPressed: ()async{
-                              if(_formkey.currentState.validate()){
-                                setState(() {
-                                  load=true;
-                                });
-                                dynamic result=await _auth.signinWithEmailAndPsswd(email, password);
-                                if(result==null){
-                                  setState(() {
-                                    error="Please input valid credentials";
-                                    load=false;
-                                  });
-                                }
-                              }
-                            },
-                          ),
+                            Container(
+                              height: 48,
+                              width: 180,
+                              child: RaisedButton(
+                                shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(10))),
+                                elevation: 5,
+                                color: Colors.green[300],
+                                child: Text("Create account",style: TextStyle(
+                                    fontSize: 21,color: Colors.grey[100]
+                                ),),
+                                onPressed: (){
+                                  widget.refrsh();
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                         SizedBox(height: 20,),
                         Text(error,style: TextStyle(
