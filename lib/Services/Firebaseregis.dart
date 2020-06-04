@@ -41,7 +41,7 @@ class Registration{
         }
       );
       dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan']);
-      bool done=await Approval(uid:result.user.uid).addNewUid(credentials['name']);
+      bool done=await Approval(uid:result.user.uid).addNewUid(credentials['name'],credentials['fmcToken']);
       if(done==false||planres==null){
         return null;
       }else{
@@ -87,11 +87,12 @@ class Approval{
   String uid;
   Approval({this.uid});
 
-  Future<bool> addNewUid(String name)async{
+  Future<bool> addNewUid(String name,String fmcToken)async{
     try{
     await _approval.document('$uid').setData({
       'IsApproved':false,
       'name':name,
+      'fmcToken':fmcToken,
       'created':DateTime.now()
     });
     return true;

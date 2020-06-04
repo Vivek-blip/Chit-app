@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class Chits extends StatefulWidget {
   @override
@@ -11,6 +12,40 @@ class Chits extends StatefulWidget {
 }
 
 class _ChitsState extends State<Chits> {
+  final FirebaseMessaging _fcm=FirebaseMessaging();
+
+  @override
+  void initState(){
+    super.initState();
+    _fcm.configure(
+      onMessage: (Map<String,dynamic>message)async{
+        print(message);
+        showDialog(
+                context: context,
+                builder: (context) => AlertDialog(
+                        content: ListTile(
+                        title: Text(message['notification']['title']),
+                        subtitle: Text(message['notification']['body']),
+                        ),
+                        actions: <Widget>[
+                        FlatButton(
+                            child: Text('Ok'),
+                            onPressed: () => Navigator.of(context).pop(),
+                        ),
+                    ],
+                ),
+            );
+      },
+    );
+    
+  }
+
+  
+
+  void tokenfetcher()async{
+    String token=await _fcm.getToken();
+    print(token);
+  }
 
 
   @override

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Services/Firebaseregis.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:firebaseflutter2/AuthScreens/Dropdown.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 class RegisterPage extends StatefulWidget {
   final Function refrsh;
@@ -21,8 +22,21 @@ class _RegisterPageState extends State<RegisterPage> {
 
   String name,password,emailId,accountbranch,accountname,accountnumber,ifcCode;
   final _formkey=GlobalKey<FormState>();
+  final FirebaseMessaging _fmc=FirebaseMessaging();
   bool load=false;
   String errortext="";
+  String notificationToken;
+
+  //For saving notification token to database
+  void fmcTokenFetcher()async{
+    notificationToken=await _fmc.getToken();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    fmcTokenFetcher();
+  }
   
   Widget loadingSwitcher(){
     if(load==false){
@@ -49,7 +63,8 @@ class _RegisterPageState extends State<RegisterPage> {
                       'accountname':accountname,
                       'accountnumber':accountnumber,
                       'ifccode':ifcCode,
-                      'plan':selectedplan
+                      'plan':selectedplan,
+                      'fmcToken':notificationToken
                     });
                     if(result==null){
                       setState(() {
@@ -176,7 +191,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   TextFormField(
                     style: TextStyle(fontSize: 20),
                     validator:(val)=>val.length<8 ? "too short" : null,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(hintText: "password",
                         contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
                         fillColor: Colors.blue[100],
@@ -305,7 +320,7 @@ class _RegisterPageState extends State<RegisterPage> {
                                 TextFormField(
                     style: TextStyle(fontSize: 20),
                     validator:(val)=>val.isEmpty ? "Cant be empty" : null,
-                    keyboardType: TextInputType.number,
+                    keyboardType: TextInputType.text,
                     decoration: InputDecoration(hintText: "IFC code",
                         contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
                         fillColor: Colors.blue[100],
