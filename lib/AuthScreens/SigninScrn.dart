@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
 import 'package:firebaseflutter2/Services/Auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 
 class Signin extends StatefulWidget {
@@ -15,10 +16,23 @@ class _SigninState extends State<Signin> {
   final Authentication _auth=Authentication();
   final _formkey=GlobalKey<FormState>();
   bool load=false;
+  final FirebaseMessaging _fmc=FirebaseMessaging();
 
   String email='';
   String password='';
   String error='';
+  String notificationToken;
+
+  //For saving notification token to database
+  void fmcTokenFetcher()async{
+    notificationToken=await _fmc.getToken();
+  }
+
+  @override
+  void initState(){
+    super.initState();
+    fmcTokenFetcher();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -123,11 +137,11 @@ class _SigninState extends State<Signin> {
                                     fontSize: 21,color: Colors.grey[100]
                                 ),),
                                 onPressed: ()async{
-                                  if(_formkey.currentState.validate()){
+                                  if(_formkey.currentState.validate()&&notificationToken!=null){
                                     setState(() {
                                       load=true;
                                     });
-                                    dynamic result=await _auth.signinWithEmailAndPsswd(email, password);
+                                    dynamic result=await _auth.signinWithEmailAndPsswd(email, password,notificationToken);
                                     if(result==null){
                                       setState(() {
                                         error="Please input valid credentials";

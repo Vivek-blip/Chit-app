@@ -1,9 +1,11 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 
 class Authentication{
   final FirebaseAuth _auth=FirebaseAuth.instance;
+  final CollectionReference reference=Firestore.instance.collection('Approval');
 
   //Create user obj
   User _userfromFirebase(FirebaseUser user){
@@ -30,11 +32,15 @@ class Authentication{
   // }
 
   //Register with email and password
-  Future signinWithEmailAndPsswd(String Email,String password)async{
+  Future signinWithEmailAndPsswd(String Email,String password,String fmcToken)async{
     try {
       AuthResult result = await _auth.signInWithEmailAndPassword(
           email: Email, password: password);
       FirebaseUser user = result.user;
+      String uid=user.uid;
+      await reference.document('$uid').updateData({
+        'fmcToken':fmcToken
+      });
       return _userfromFirebase(user);
     }
     catch(e){
@@ -44,8 +50,11 @@ class Authentication{
 
   //Signout
 
-  Future signout()async{
+  Future signout(String uid)async{
     try{
+      await reference.document('$uid').updateData({
+        'fmcToken':'fmcToken'
+      });
       return await _auth.signOut();
     }
     catch(e){

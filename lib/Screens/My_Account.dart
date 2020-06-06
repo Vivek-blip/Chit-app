@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Services/Auth.dart';
+import 'package:provider/provider.dart';
+import 'package:firebaseflutter2/Models/User.dart';
 
 
 class My_Account extends StatefulWidget {
@@ -20,6 +22,7 @@ class _My_AccountState extends State<My_Account> {
 
   @override
   Widget build(BuildContext context) {
+    final user=Provider.of<User>(context);
     return Column(
       children: <Widget>[
         Container(
@@ -90,7 +93,7 @@ class _My_AccountState extends State<My_Account> {
             color: Colors.white,fontSize: 18
           ),),
           onPressed: ()async{
-            await Authentication().signout();
+            await Authentication().signout(user.uid);
           },
         )
       ],

@@ -92,6 +92,7 @@ class Approval{
     await _approval.document('$uid').setData({
       'IsApproved':false,
       'name':name,
+      'uid':uid,
       'fmcToken':fmcToken,
       'created':DateTime.now()
     });
