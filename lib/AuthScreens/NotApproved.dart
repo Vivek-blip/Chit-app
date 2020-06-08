@@ -12,13 +12,16 @@ class NotApprovedScreen extends StatelessWidget {
                     end: Alignment.bottomRight
                 )
             ),
-            child: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Text("Your account is under verification",style: TextStyle(fontSize: 20,color: Colors.white,letterSpacing: 1),),
-                ],
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Text("Your account is under verification",style: TextStyle(fontSize: 20,color: Colors.white,letterSpacing: 1),),
+                ),
+                 Center(
+                  child: Container(child: Text("we will send you a notification on approval",style: TextStyle(fontSize: 15,color: Colors.white,letterSpacing: 1),)),
+                ),
+              ],
             ),
       ),
     );

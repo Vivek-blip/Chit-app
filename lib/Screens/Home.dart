@@ -15,11 +15,12 @@ class _HomeState extends State<Home> {
 
     final Authentication _auth=Authentication();
     int _currentIndex=0;
+    List<Widget> wgts=[Chits(),Sc_wallet(),notification(),My_Account()];
 
-    Widget NavigationSelector(int index){
-      List<Widget> wgts=[Chits(),Sc_wallet(),notification(),My_Account()];
-      return wgts[index];
-    }
+    // Widget NavigationSelector(int index){
+    //   List<Widget> wgts=[Chits(),Sc_wallet(),notification(),My_Account()];
+    //   return wgts[index];
+    // }
 
     String AppbarTextSeletor(int index){
       List<String> txt=["Chit","SC Wallet","Notification","My Account"];
@@ -47,10 +48,21 @@ class _HomeState extends State<Home> {
                   end: Alignment.bottomRight
               )
           ),
-            child: NavigationSelector(_currentIndex)),
+            child: AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              child: wgts[_currentIndex],
+              transitionBuilder: (child,animation){
+                return FadeTransition(
+                  child: child,
+                  opacity:animation,
+                );
+              },
+            ),
+            ),
 
           bottomNavigationBar: BottomNavigationBar(
-            selectedItemColor: Color(0xff28c7fa),
+            selectedItemColor: Colors.grey[200],
+            unselectedItemColor: Color(0xff59d4e8),
             elevation: 0,
             iconSize: 28,
             showUnselectedLabels: true,

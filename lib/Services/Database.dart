@@ -1,9 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/User.dart';
+import 'package:firebaseflutter2/Models/NotifiModel.dart';
+
 
 class DatabaseService{
 
 final CollectionReference referance=Firestore.instance.collection('brews');
+final CollectionReference notifiReference=Firestore.instance.collection('Notification');
 final String uid;
 DatabaseService({this.uid});
 
@@ -21,7 +24,13 @@ UserData snapshotToUserdata(DocumentSnapshot snapshot){
     name: snapshot.data['name'],
     chitno: snapshot.data['chit no'],
     chit_type: snapshot.data['chit type'],
-    chit_validity: snapshot.data['chit validity']
+    chit_validity: snapshot.data['chit validity'],
+    accountName: snapshot.data['accountname'],
+    accountBranch: snapshot.data['accountbranch'],
+    accountNumber: snapshot.data['accountnumber'],
+    ifscCode: snapshot.data['ifc code'],
+    monthlyAmt: snapshot.data['monthly amt'],
+    amount: snapshot.data['amount']
   );
 }
 
@@ -29,6 +38,37 @@ Future<UserData> get fetchUserDoc async{
   DocumentSnapshot qsnp=await referance.document('$uid').get();
   return snapshotToUserdata(qsnp);
   
+}
+
+List<NotifiData> snapshotToNotifidata(DocumentSnapshot snapshot){
+  List<NotifiData> list=[];
+  for(int i=snapshot['message'].length-1 ; i>=0;i--){
+    list.add(
+      NotifiData(
+        title: snapshot['message'][i]['title'],
+        content: snapshot['message'][i]['body'],
+      )
+    );
+  }
+  return list;
+}
+
+Future<List<NotifiData>> fetchNotification() async{
+  
+ try{
+  DocumentSnapshot snp= await notifiReference.document('BroadcastedNotifi').get();
+  if(snp['message'].isEmpty){
+    return [NotifiData(content: null,title: null,date: null),];
+  }
+  else{
+    return snapshotToNotifidata(snp);
+  }
+ }catch(e){
+   print(e);
+   return null;
+ }
+  
+
 }
 
 

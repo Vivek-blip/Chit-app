@@ -154,7 +154,7 @@ class _SigninState extends State<Signin> {
                             ),
                             SizedBox(
                               height: 20,
-                              child: Text("Or",style: TextStyle(color: Colors.white,fontSize: 15),
+                              child: Text("____________",style: TextStyle(color: Colors.white,fontSize: 15),
                             ),),
                             Container(
                               height: 48,
@@ -164,7 +164,7 @@ class _SigninState extends State<Signin> {
                                 elevation: 5,
                                 color: Colors.green[300],
                                 child: Text("Create account",style: TextStyle(
-                                    fontSize: 21,color: Colors.grey[100]
+                                    fontSize: 18,color: Colors.grey[100]
                                 ),),
                                 onPressed: (){
                                   widget.refrsh();
