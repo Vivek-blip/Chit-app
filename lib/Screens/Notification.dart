@@ -4,6 +4,7 @@ import 'package:firebaseflutter2/Models/NotifiModel.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
+import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
 
 class notification extends StatefulWidget {
   @override
@@ -73,6 +74,64 @@ class ListviewPg extends StatefulWidget {
 class _ListviewPgState extends State<ListviewPg> {
   final List<NotifiData>snapshot;
   _ListviewPgState(this.snapshot);
+  bool check=true;
+
+  showDialoguebox(String title,String content,String url){
+    if(url!=''){
+      check=false; 
+    }else{
+      check=true;
+    }
+    return showDialog(
+      context: context,barrierDismissible: true,
+      child: Dialog(
+        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+        backgroundColor: Colors.white,
+        child: Container(
+          height: 280,
+          child: ListView(
+            children: <Widget>[
+              Container(
+                decoration: BoxDecoration(borderRadius: BorderRadius.only(topLeft: Radius.circular(10),topRight:Radius.circular(10)),color: Colors.red,),
+                child: Center(child: Text(
+                  '$title',maxLines: 2,
+                  style: TextStyle(color: Colors.white,fontSize: 21),
+                  )),
+                height: 80,),
+                SizedBox(height: 20,),
+                Container(
+                  padding: EdgeInsets.all(10),
+                   decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10)),),
+                  // height: 250,
+                  child: Text(
+                  '$content',maxLines: 2,
+                  style: TextStyle(color: Colors.grey[800],fontSize:18),
+                  )),
+                  check?Text(''): Container(
+                    padding: EdgeInsets.all(10),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        Text(url),
+                         MaterialButton(
+                           color: Colors.red,
+                              child: Text('Open link',style: TextStyle(color: Colors.white),),
+                              onPressed: (){
+                                Navigator.push(context, MaterialPageRoute(builder: (context)=>Webpage(url: url,)));
+                              },
+                            ),
+                      ],
+                    ),
+                  ),
+
+                  
+            ],
+          ),
+          ),
+      ),
+      
+      );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,18 +142,46 @@ class _ListviewPgState extends State<ListviewPg> {
           return Container(
             height: 80,
             child: Card(
+              elevation: 10,
               shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20),),
               color: Color(0xfface6f6),
               shadowColor: Color(0x552f89fc),
               child: ListTile(
-                title: Text(snapshot[index].titledata),
-                subtitle: Text(snapshot[index].contentdata),
+                title: Text(snapshot[index].titledata,),
+                subtitle: Container(
+                  height: 100,
+                  child: Text(snapshot[index].contentdata,maxLines: 2,textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,)),
                 trailing: Text('data'),
+                onTap: (){
+                  showDialoguebox(snapshot[index].titledata,snapshot[index].contentdata,snapshot[index].urldata);
+                } ,
               ),
             ),
           );
         },
         
       );
+  }
+}
+
+class Webpage extends StatefulWidget {
+  final String url;
+  Webpage({this.url});
+  @override
+  _WebpageState createState() => _WebpageState(url);
+}
+
+class _WebpageState extends State<Webpage> {
+  String url;
+  _WebpageState(this.url);
+
+  @override
+  Widget build(BuildContext context) {
+    return WebviewScaffold(
+      appBar: AppBar(
+        title: Text('EDM webview'),
+      ),
+      url: url,
+    );
   }
 }

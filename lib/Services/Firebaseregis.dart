@@ -38,6 +38,12 @@ class Registration{
           'accountname':credentials['accountname'],
           'accountnumber':credentials['accountnumber'],
           'ifc code':credentials['ifccode'],
+          'mob no':credentials['mob no'],
+          'address':credentials['adress'],
+          'pincode':credentials['pincode'],
+          'city':credentials['city'],
+          'state':credentials['state'],
+          'adhaarno':credentials['adhaarno'],
         }
       );
       dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan']);

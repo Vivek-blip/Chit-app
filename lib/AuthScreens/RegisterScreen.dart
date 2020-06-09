@@ -11,7 +11,7 @@ class RegisterPage extends StatefulWidget {
   _RegisterPageState createState() => _RegisterPageState();
 }
 
-class _RegisterPageState extends State<RegisterPage> {
+class _RegisterPageState extends State<RegisterPage> with AutomaticKeepAliveClientMixin{
   String selectedplan;
   selextedPlan(String plan){
     setState(() {
@@ -20,7 +20,22 @@ class _RegisterPageState extends State<RegisterPage> {
     
   }
 
-  String name,password,emailId,accountbranch,accountname,accountnumber,ifcCode;
+   @override
+    bool get wantKeepAlive => true;
+
+final adhaarno=TextEditingController();
+final name=TextEditingController();
+final password=TextEditingController();
+final emailId=TextEditingController();
+final accountbranch=TextEditingController();
+final accountname=TextEditingController();
+final accountnumber=TextEditingController();
+final ifcCode=TextEditingController();
+final mobno=TextEditingController();
+final adress=TextEditingController();
+final pincode=TextEditingController();
+final city=TextEditingController();
+final state=TextEditingController();
   final _formkey=GlobalKey<FormState>();
   final FirebaseMessaging _fmc=FirebaseMessaging();
   bool load=false;
@@ -56,14 +71,21 @@ class _RegisterPageState extends State<RegisterPage> {
                       load=true;
                       errortext="";
                     });
-                    dynamic result=await Registration().registerNewUser(emailId, {
-                      'password':password,
-                      'name':name,
-                      'accountbranch':accountbranch,
-                      'accountname':accountname,
-                      'accountnumber':accountnumber,
-                      'ifccode':ifcCode,
+                    print(password.text);
+                    dynamic result=await Registration().registerNewUser(emailId.text, {
+                      'password':password.text,
+                      'name':name.text,
+                      'accountbranch':accountbranch.text,
+                      'accountname':accountname.text,
+                      'accountnumber':accountnumber.text,
+                      'ifccode':ifcCode.text,
                       'plan':selectedplan,
+                      'mob no':mobno.text,
+                      'adress':adress.text,
+                      'pincode':pincode.text,
+                      'city':city.text,
+                      'state':state.text,
+                      'adhaarno':adhaarno.text,
                       'fmcToken':notificationToken
                     });
                     if(result==null){
@@ -116,12 +138,14 @@ class _RegisterPageState extends State<RegisterPage> {
         padding: EdgeInsets.all(10),
         child: Center(
           child: Scaffold(
-            resizeToAvoidBottomInset: true,
+            // resizeToAvoidBottomInset: true,
               backgroundColor: Colors.transparent,
                     body: Form(
-              key: _formkey,
-                      child: ListView(
-                children: <Widget>[
+              key: this._formkey,
+                      child: SingleChildScrollView(
+                        
+                child: Column(
+                  children:<Widget>[
                     TextFormField(
                     style: TextStyle(fontSize: 20),
                     validator:(val)=>val.isEmpty ? "Cant be empty" : null,
@@ -148,11 +172,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       name=val;
-                      });
-                    },
+                    controller: name,
+            
                   ),
                   SizedBox(height: 30,),
                   TextFormField(
@@ -180,11 +201,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       emailId=val;
-                      });
-                    },
+                    controller: emailId,
+
                   ),
                  
                   SizedBox(height: 30,),
@@ -213,11 +231,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       password=val;
-                      });
-                    },
+                    controller: password,
+                   
                   ),
                   SizedBox(height: 30,),
                   TextFormField(
@@ -246,11 +261,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       accountbranch=val;
-                      });
-                    },
+                    controller: accountbranch,
+                    
                   ),
                 
                   SizedBox(height: 30,),
@@ -279,11 +291,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       accountname=val;
-                      });
-                    },
+                    controller: accountname,
+                  
                   ),
                   SizedBox(height: 23,),
                                 TextFormField(
@@ -311,11 +320,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       accountnumber=val;
-                      });
-                    },
+                    controller: accountnumber,
+                    
                   ),SizedBox(height: 23,),
                                 TextFormField(
                     style: TextStyle(fontSize: 20),
@@ -342,11 +348,187 @@ class _RegisterPageState extends State<RegisterPage> {
                           borderRadius: BorderRadius.circular(15),
                         )
                     ),
-                    onChanged: (val){
-                      setState(() {
-                       ifcCode=val;
-                      });
-                    },
+                    controller: ifcCode,
+                    
+                  ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(hintText: "Mobile number",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: mobno,
+                    
+                  ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(hintText: "Residential address",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: adress,
+                                      ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(hintText: "Pincode",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: pincode,
+                   
+                  ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(hintText: "City",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: city,
+                   
+                  ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.text,
+                    decoration: InputDecoration(hintText: "State",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: state,
+                    
+                  ),
+                  SizedBox(height: 30,),
+                  TextFormField(
+                    style: TextStyle(fontSize: 20),
+                    validator:(val)=>val.isEmpty ? "Cant be empty" : null,
+                    textCapitalization: TextCapitalization.sentences,
+                    keyboardType: TextInputType.number,
+                    decoration: InputDecoration(hintText: "Pancard / Adhaar no",
+                        contentPadding: EdgeInsets.symmetric(vertical: 13,horizontal: 10),
+                        fillColor: Colors.blue[100],
+                      filled: true,
+                      focusedErrorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      errorBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue[100],width: 2),
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                        focusedBorder: OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.blue[500],width: 2),
+                          borderRadius: BorderRadius.circular(15),
+                        )
+                    ),
+                    controller: adhaarno,
+                    
                   ),
                   SizedBox(height: 23,),
                   Center(
@@ -356,6 +538,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   SizedBox(height: 23,),
                   
                 ],
+                )
               ),
             ),
             floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

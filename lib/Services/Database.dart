@@ -47,6 +47,7 @@ List<NotifiData> snapshotToNotifidata(DocumentSnapshot snapshot){
       NotifiData(
         title: snapshot['message'][i]['title'],
         content: snapshot['message'][i]['body'],
+        url:snapshot['message'][i]['url'] 
       )
     );
   }
