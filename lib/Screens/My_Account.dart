@@ -103,6 +103,21 @@ class _ListviewpgState extends State<Listviewpg> {
             indent: 10,endIndent: 10,
           ),
           ListTile(
+            title: Text("Registration ID",style: TextStyle(
+                fontSize: 15,color: Colors.amberAccent,fontFamily: "Schyler",fontWeight: FontWeight.bold,letterSpacing: 2
+            ),),
+            subtitle: Padding(
+              padding: const EdgeInsets.only(top:12.0),
+              child: Text(snapshot.regno,style: TextStyle(
+                  fontSize: 22,color: Colors.grey[100],fontFamily: "Schyler",letterSpacing: 2
+              ),),
+            ),
+          ),
+          Divider(
+            color:Colors.grey,
+            indent: 10,endIndent: 10,
+          ),
+          ListTile(
             title: Text("Account name",style: TextStyle(
                 fontSize: 15,color: Colors.amberAccent,fontFamily: "Schyler",fontWeight: FontWeight.bold,letterSpacing: 2
             ),),

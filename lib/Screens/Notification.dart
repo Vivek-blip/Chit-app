@@ -104,7 +104,7 @@ class _ListviewPgState extends State<ListviewPg> {
                    decoration: BoxDecoration(borderRadius: BorderRadius.only(bottomLeft: Radius.circular(10),bottomRight:Radius.circular(10)),),
                   // height: 250,
                   child: Text(
-                  '$content',maxLines: 2,
+                  '$content',
                   style: TextStyle(color: Colors.grey[800],fontSize:18),
                   )),
                   check?Text(''): Container(
@@ -114,6 +114,7 @@ class _ListviewPgState extends State<ListviewPg> {
                       children: <Widget>[
                         Text(url),
                          MaterialButton(
+                           shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
                            color: Colors.red,
                               child: Text('Open link',style: TextStyle(color: Colors.white),),
                               onPressed: (){
@@ -151,7 +152,7 @@ class _ListviewPgState extends State<ListviewPg> {
                 subtitle: Container(
                   height: 100,
                   child: Text(snapshot[index].contentdata,maxLines: 2,textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,)),
-                trailing: Text('data'),
+                trailing: Text(snapshot[index].datedata),
                 onTap: (){
                   showDialoguebox(snapshot[index].titledata,snapshot[index].contentdata,snapshot[index].urldata);
                 } ,

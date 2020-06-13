@@ -49,13 +49,13 @@ class Registration{
       dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan']);
       bool done=await Approval(uid:result.user.uid).addNewUid(credentials['name'],credentials['fmcToken']);
       if(done==false||planres==null){
-        return null;
+        return 'null';
       }else{
         return "Sucess";
       }
     }catch(e){
-      print(e);
-      return null;
+      print(e.code);
+      return e.code.toString();
     }
   }
 

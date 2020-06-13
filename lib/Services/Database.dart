@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Models/NotifiModel.dart';
+import 'package:intl/intl.dart';
 
 
 class DatabaseService{
@@ -30,7 +31,8 @@ UserData snapshotToUserdata(DocumentSnapshot snapshot){
     accountNumber: snapshot.data['accountnumber'],
     ifscCode: snapshot.data['ifc code'],
     monthlyAmt: snapshot.data['monthly amt'],
-    amount: snapshot.data['amount']
+    amount: snapshot.data['amount'],
+    regno: snapshot.data['registration id']
   );
 }
 
@@ -42,12 +44,18 @@ Future<UserData> get fetchUserDoc async{
 
 List<NotifiData> snapshotToNotifidata(DocumentSnapshot snapshot){
   List<NotifiData> list=[];
+  
   for(int i=snapshot['message'].length-1 ; i>=0;i--){
+    var date=DateTime.fromMicrosecondsSinceEpoch(snapshot['message'][i]['date']*1000);
+    var newFormat=DateFormat("dd-MM-yy");
+    String formatedDate=newFormat.format(date);
+    
     list.add(
       NotifiData(
         title: snapshot['message'][i]['title'],
         content: snapshot['message'][i]['body'],
-        url:snapshot['message'][i]['url'] 
+        url:snapshot['message'][i]['url'] ,
+        date: formatedDate
       )
     );
   }
@@ -55,7 +63,6 @@ List<NotifiData> snapshotToNotifidata(DocumentSnapshot snapshot){
 }
 
 Future<List<NotifiData>> fetchNotification() async{
-  
  try{
   DocumentSnapshot snp= await notifiReference.document('BroadcastedNotifi').get();
   if(snp['message'].isEmpty){
