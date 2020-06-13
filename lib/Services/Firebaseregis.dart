@@ -108,12 +108,12 @@ class Approval{
     }
   }
 
-  Future<bool> checkApproval()async{
+  Stream<bool> checkApproval(){
     try{
-      DocumentSnapshot snp=await _approval.document('$uid').get();
-      return snp.data['IsApproved'];
+      Stream<DocumentSnapshot> snp= _approval.document('$uid').snapshots();
+      return snp.map((event) => event.data['IsApproved']);
     }catch(e){
-      return false;
+      return null;
     }
   }
 

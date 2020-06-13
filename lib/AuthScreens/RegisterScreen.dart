@@ -59,7 +59,7 @@ final state=TextEditingController();
           child: Container(
             
             decoration: BoxDecoration(borderRadius:BorderRadius.circular(10),color: Colors.transparent,),
-        height: 250,
+        height: MediaQuery.of(context).size.height/2.65,
         width: MediaQuery.of(context).size.width,
         child: Dropdownscreen(selextedPlan)),
     )
@@ -121,7 +121,7 @@ final state=TextEditingController();
                   FocusScope.of(context).unfocus();
                   if(selectedplan==null){
 
-                      final snack=SnackBar(content: Text('Please select a plan'),duration: Duration(seconds:1),backgroundColor: Colors.black,);
+                      final snack=SnackBar(content: Text('Please select a plan'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
                       Scaffold.of(cont).showSnackBar(snack);
                     
                   }
@@ -150,14 +150,14 @@ final state=TextEditingController();
                       case 'ERROR_EMAIL_ALREADY_IN_USE':
                         setState(() {
                         load=false;
-                      final snack=SnackBar(content: Text('This e-mail is already in use'),duration: Duration(seconds:1),backgroundColor: Colors.black,);
+                      final snack=SnackBar(content: Text('This e-mail is already in use'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
                       Scaffold.of(cont).showSnackBar(snack);
                       });
                         break;
                       case 'ERROR_INVALID_EMAIL':
                         setState(() {
                         load=false;
-                      final snack=SnackBar(content: Text('Invalid e-mail ID'),duration: Duration(seconds:1),backgroundColor: Colors.black,);
+                      final snack=SnackBar(content: Text('Invalid e-mail ID'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
                       Scaffold.of(cont).showSnackBar(snack);
                       });
                         break;
@@ -165,7 +165,7 @@ final state=TextEditingController();
                       case 'null':
                         setState(() {
                         load=false;
-                      final snack=SnackBar(content: Text('Something went wrong'),duration: Duration(seconds:1),backgroundColor: Colors.black,);
+                      final snack=SnackBar(content: Text('Something went wrong'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
                       Scaffold.of(cont).showSnackBar(snack);
                       });
                       break;

@@ -25,8 +25,8 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                   borderRadius:BorderRadius.circular(10), color: Colors.blue[300],
                 ),
                 margin: EdgeInsets.only(top:5,left:2.5,right:2.5,bottom:5),
-                height: 240,
-                width: MediaQuery.of(context).size.width/3,
+                height: MediaQuery.of(context).size.height/2.7,
+                width: MediaQuery.of(context).size.width/2.8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: <Widget>[
@@ -63,6 +63,7 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                         fontSize: 20,color: Colors.red[300]
                       ),),
                     ),
+                    SizedBox(height: 8,),
                     MaterialButton(
                       height: 30,
                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
