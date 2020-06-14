@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Screens/Home.dart';
 import 'package:firebaseflutter2/AuthScreens/SigninRegistertogler.dart';
 import 'package:flutter/material.dart';
@@ -15,24 +16,33 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
 
+Stream<DocumentSnapshot> streamupdate(User user){
+  if(user==null){
+    return null;
+  }
+  else{
+  return Approval(uid:user.uid).checkApproval;
+  }
   
+}
 
  @override
   Widget build(BuildContext context) {
     final user=Provider.of<User>(context);
-    return StreamBuilder<bool>(
-      stream: Approval(uid:user.uid).checkApproval(),
+    return StreamBuilder<DocumentSnapshot>(
+      stream: streamupdate(user),
       builder: (BuildContext context,AsyncSnapshot snapshot){
         if (user==null){
       return SigninRegistertoglerscreen();
       }
-        else if(snapshot.data== false){
+        else if(snapshot.data['IsApproved']== false){
           return NotApprovedScreen();
         }
-        else if(snapshot.data==true){
+        else if(snapshot.data['IsApproved']==true){
           return Home();
         }
         else{
+          print(snapshot.data);
           return Loader();
         }
       },

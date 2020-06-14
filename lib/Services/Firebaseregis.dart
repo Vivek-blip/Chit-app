@@ -108,11 +108,13 @@ class Approval{
     }
   }
 
-  Stream<bool> checkApproval(){
+
+  Stream<DocumentSnapshot> get checkApproval{
     try{
-      Stream<DocumentSnapshot> snp= _approval.document('$uid').snapshots();
-      return snp.map((event) => event.data['IsApproved']);
+     return  _approval.document('$uid').snapshots();
+      // return snp.map(streamhelper);
     }catch(e){
+      print(e);
       return null;
     }
   }
