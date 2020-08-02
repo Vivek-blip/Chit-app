@@ -3,7 +3,7 @@ import 'package:firebaseflutter2/Services/Auth.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/AuthScreens/Wrapper.dart';
-import 'package:firebase_messaging/firebase_messaging.dart';
+
 
 
 
@@ -24,7 +24,7 @@ class _FirstpageState extends State<Firstpage> {
   @override
   Widget build(BuildContext context) {
     return StreamProvider<User>.value(
-      value: Authentication().authChange,
+      value: _auth.authChange,
       child: MaterialApp(
         home: Wrapper(),
       ),

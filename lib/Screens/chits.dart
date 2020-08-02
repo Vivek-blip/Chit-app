@@ -126,17 +126,17 @@ class _ChitViewpgState extends State<ChitViewpg> {
       ],
       ),
       SizedBox(height: 50,),
-      Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: <Widget>[
-      Text("Chit No : ",style: TextStyle(
-      fontSize: 18,color: Colors.amber[200],fontFamily: "Schyler",fontWeight: FontWeight.bold
-      ),),
-      Text(snapshot.chitno,style: TextStyle(
-      fontSize: 22,color: Colors.white,fontFamily: "Schyler"
-      ),),
-      ],
-      ),
+      // Row(
+      // mainAxisAlignment: MainAxisAlignment.center,
+      // children: <Widget>[
+      // Text("Chit No : ",style: TextStyle(
+      // fontSize: 18,color: Colors.amber[200],fontFamily: "Schyler",fontWeight: FontWeight.bold
+      // ),),
+      // Text(snapshot.chitno,style: TextStyle(
+      // fontSize: 22,color: Colors.white,fontFamily: "Schyler"
+      // ),),
+      // ],
+      // ),
       ],
       ),
       Container(

@@ -33,8 +33,12 @@ Stream<DocumentSnapshot> streamupdate(User user){
       stream: streamupdate(user),
       builder: (BuildContext context,AsyncSnapshot snapshot){
         if (user==null){
+          print(user);
       return SigninRegistertoglerscreen();
       }
+      else if(snapshot.data==null){
+          return Loader();
+        }
         else if(snapshot.data['IsApproved']== false){
           return NotApprovedScreen();
         }

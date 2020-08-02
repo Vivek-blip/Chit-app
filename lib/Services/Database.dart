@@ -20,7 +20,7 @@ DatabaseService({this.uid});
 //   });
 // }
 
-UserData snapshotToUserdata(DocumentSnapshot snapshot){
+UserData snapshotToUserdata(DocumentSnapshot snapshot){     //Fetching User details from firebase brews collection
   return UserData(
     name: snapshot.data['name'],
     chitno: snapshot.data['chit no'],

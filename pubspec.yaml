@@ -29,8 +29,8 @@ dependencies:
   cloud_firestore: ^0.12.9+4
   flutter_spinkit: "^4.1.2"
   firebase_messaging: ^6.0.16
-  flutter_webview_plugin: ^0.3.11
-  intl: ^0.16.1
+  flutter_webview_plugin: ^0.3.11  #for youtube link to be opened in web view
+  intl: ^0.16.1  #for date and time formatting
 
 dev_dependencies:
   flutter_test:

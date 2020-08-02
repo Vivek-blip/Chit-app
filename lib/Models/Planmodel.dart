@@ -1,7 +1,8 @@
 
 
 class plan{
-String chitPlan,amount,monthlyAmt,tenor;
+String chitPlan,monthlyAmt,tenor;
+List amount;
 
 plan({this.chitPlan,this.amount,this.monthlyAmt,this.tenor});
 

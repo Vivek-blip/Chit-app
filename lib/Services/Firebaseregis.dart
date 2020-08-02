@@ -46,7 +46,7 @@ class Registration{
           'adhaarno':credentials['adhaarno'],
         }
       );
-      dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan']);
+      dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan'],credentials['selectedAmount']);
       bool done=await Approval(uid:result.user.uid).addNewUid(credentials['name'],credentials['fmcToken']);
       if(done==false||planres==null){
         return 'null';
@@ -71,14 +71,14 @@ class Registration{
     }
   }
 
-  Future addSelectedPlanToUser(String uid,String plan)async{
+  Future addSelectedPlanToUser(String uid,String plan,String selectedAmount)async{
     try{
     DocumentSnapshot snp=await _dropdownref.document('$plan').get();
     await _firestore.document('$uid').updateData({
       'chit type':snp.data['chit plan'],
       'chit validity':snp.data['tenor'],
       'monthly amt':snp.data['monthly amt'],
-      'amount':snp.data['amount']
+      'amount':selectedAmount
     });
     return "Sucess";
     }catch(e){

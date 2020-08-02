@@ -13,8 +13,22 @@ class Dropdownscreen extends StatefulWidget {
 
 class _DropdownscreenState extends State<Dropdownscreen> {
   
-  String selected="Select plan";
+  List selectedValue=["Select plan",-1];
+  
 
+
+  List<DropdownMenuItem<String>> dropdownMenuItem(List items){    // Function for making list of dropdownmenuitems for the dropdown to choose amount
+
+    return items
+          .map<DropdownMenuItem<String>>((val){
+            return DropdownMenuItem<String>(
+              value: val,
+              child:Text('₹ $val',style: TextStyle(
+                        fontSize: 20,color: Colors.blue[900]
+                      ),),
+            );
+          }).toList();
+  }
 
   List<Widget> planListMaker(data){
     List<Widget>lst=[];
@@ -25,7 +39,7 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                   borderRadius:BorderRadius.circular(10), color: Colors.blue[300],
                 ),
                 margin: EdgeInsets.only(top:5,left:2.5,right:2.5,bottom:5),
-                height: MediaQuery.of(context).size.height/2.7,
+                height: MediaQuery.of(context).size.height/2.2,
                 width: MediaQuery.of(context).size.width/2.8,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -41,17 +55,35 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                       fontSize: 16,color: Colors.grey[800]
                     ),),
                     Center(
-                      child: Text(data[i].amount,style: TextStyle(
-                        fontSize: 20,color: Colors.red[300]
-                      ),),
+                      child: DropdownButton<String>(
+                        value: selectedValue[1]!=i?null:selectedValue[0],
+                        hint: Text('Choose',style: TextStyle(
+                          fontSize: 20,color: Colors.blue[900]
+                        ),),
+                        icon: Icon(Icons.arrow_downward,color: Colors.white,),
+                        iconSize: 18,
+                        elevation: 15,
+                        underline: Container(
+                            height: 2,
+                            color: Colors.deepPurpleAccent,
+                          ),
+                          onChanged: (String val){
+                            setState(() {
+                              selectedValue[0]=val;
+                              selectedValue[1]=i;
+                              print(val);
+                            });
+                          },
+                          items: dropdownMenuItem(data[i].amount),
+                      )
                     ),
                     SizedBox(height: 10,),
                     Text(' Monthly amount :',style: TextStyle(
                       fontSize: 16,color: Colors.grey[800]
                     ),),
                     Center(
-                      child: Text(data[i].monthlyAmt,style: TextStyle(
-                        fontSize: 20,color: Colors.red[300]
+                      child: Text('₹ ${data[i].monthlyAmt}',style: TextStyle(
+                        fontSize: 20,color: Colors.blue[900]
                       ),),
                     ),
                     SizedBox(height: 10,),
@@ -60,7 +92,7 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                     ),),
                     Center(
                       child: Text('${data[i].tenor} months',style: TextStyle(
-                        fontSize: 20,color: Colors.red[300]
+                        fontSize: 20,color: Colors.blue[900]
                       ),),
                     ),
                     SizedBox(height: 8,),
@@ -69,8 +101,10 @@ class _DropdownscreenState extends State<Dropdownscreen> {
                       shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
                       color: Colors.greenAccent,
                       onPressed: (){
-                        widget.selectedplan(data[i].chitPlan);
+                        if(selectedValue[1]==i){
+                        widget.selectedplan(data[i].chitPlan,selectedValue[0]);
                         Navigator.pop(context);
+                        }
                       },
                       child: Text('Select',style:TextStyle(color: Colors.white,fontSize:17)),
                     ),

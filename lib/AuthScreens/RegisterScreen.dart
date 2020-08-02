@@ -13,10 +13,12 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   String selectedplan;
+  String amounT;
   BuildContext cont;
-  selextedPlan(String plan){
+  selextedPlan(String plan,String amount){
     setState(() {
       selectedplan=plan;
+      amounT=amount;
     });
     
   }
@@ -59,7 +61,7 @@ final state=TextEditingController();
           child: Container(
             
             decoration: BoxDecoration(borderRadius:BorderRadius.circular(10),color: Colors.transparent,),
-        height: MediaQuery.of(context).size.height/2.65,
+        height: MediaQuery.of(context).size.height/2.2,
         width: MediaQuery.of(context).size.width,
         child: Dropdownscreen(selextedPlan)),
     )
@@ -125,7 +127,7 @@ final state=TextEditingController();
                       Scaffold.of(cont).showSnackBar(snack);
                     
                   }
-                  if(_formkey.currentState.validate()&&selectedplan!=null){
+                  if(_formkey.currentState.validate()&&selectedplan!=null&&amounT!=null){
                     setState(() {
                       load=true;
                     });
@@ -138,6 +140,7 @@ final state=TextEditingController();
                       'accountnumber':accountnumber.text,
                       'ifccode':ifcCode.text,
                       'plan':selectedplan,
+                      'selectedAmount':amounT,
                       'mob no':mobno.text,
                       'adress':adress.text,
                       'pincode':pincode.text,
@@ -263,7 +266,7 @@ final state=TextEditingController();
                     textViewWidgetDisplayer('Cant be empty', 'State', TextCapitalization.sentences, TextInputType.text, state),
                     
                     SizedBox(height: 30,),
-                    textViewWidgetDisplayer('Cant be empty', 'Pancard / Adhaar no', TextCapitalization.sentences, TextInputType.number, adhaarno),
+                    textViewWidgetDisplayer('Cant be empty', 'Pancard no', TextCapitalization.sentences, TextInputType.number, adhaarno),
                     
                     SizedBox(height: 23,),
                     Center(
