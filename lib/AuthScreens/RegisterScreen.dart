@@ -12,16 +12,16 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  String selectedplan;
-  String amounT;
+  // String selectedplan;
+  // String amounT;
   BuildContext cont;
-  selextedPlan(String plan,String amount){
-    setState(() {
-      selectedplan=plan;
-      amounT=amount;
-    });
+  // selextedPlan(String plan,String amount){
+  //   setState(() {
+  //     selectedplan=plan;
+  //     amounT=amount;
+  //   });
     
-  }
+  // }
 
 
 final adhaarno=TextEditingController();
@@ -53,20 +53,20 @@ final state=TextEditingController();
     fmcTokenFetcher();
   }
 
-  dialogueBoxView(){
-    return showDialog(context: context,
-    barrierDismissible: true,
-    child: Dialog(
-      shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
-          child: Container(
+  // dialogueBoxView(){
+  //   return showDialog(context: context,
+  //   barrierDismissible: true,
+  //   child: Dialog(
+  //     shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+  //         child: Container(
             
-            decoration: BoxDecoration(borderRadius:BorderRadius.circular(10),color: Colors.transparent,),
-        height: MediaQuery.of(context).size.height/2.2,
-        width: MediaQuery.of(context).size.width,
-        child: Dropdownscreen(selextedPlan)),
-    )
-    );
-  }
+  //           decoration: BoxDecoration(borderRadius:BorderRadius.circular(10),color: Colors.transparent,),
+  //       height: MediaQuery.of(context).size.height/2.2,
+  //       width: MediaQuery.of(context).size.width,
+  //       child: Dropdownscreen(selextedPlan)),
+  //   )
+  //   );
+  // }
 
   Widget textViewWidgetDisplayer(String errormessage,String hintname,TextCapitalization cap,TextInputType inputType,TextEditingController controller){
     bool validator(String val){
@@ -112,7 +112,8 @@ final state=TextEditingController();
     if(load==false){
       return MaterialButton(
                 shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(15))),
-                color: Colors.red[500],
+                color: Colors.blue[500],
+                minWidth: 120,
                 child: Text("Register",
                 style: 
                 TextStyle(
@@ -121,13 +122,13 @@ final state=TextEditingController();
                 
                 onPressed: ()async{
                   FocusScope.of(context).unfocus();
-                  if(selectedplan==null){
+                  // if(selectedplan==null){
 
-                      final snack=SnackBar(content: Text('Please select a plan'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
-                      Scaffold.of(cont).showSnackBar(snack);
+                  //     final snack=SnackBar(content: Text('Please select a plan'),duration: Duration(seconds:2),backgroundColor: Colors.black,);
+                  //     Scaffold.of(cont).showSnackBar(snack);
                     
-                  }
-                  if(_formkey.currentState.validate()&&selectedplan!=null&&amounT!=null){
+                  // }
+                  if(_formkey.currentState.validate()){
                     setState(() {
                       load=true;
                     });
@@ -139,8 +140,6 @@ final state=TextEditingController();
                       'accountname':accountname.text,
                       'accountnumber':accountnumber.text,
                       'ifccode':ifcCode.text,
-                      'plan':selectedplan,
-                      'selectedAmount':amounT,
                       'mob no':mobno.text,
                       'adress':adress.text,
                       'pincode':pincode.text,
@@ -269,19 +268,19 @@ final state=TextEditingController();
                     textViewWidgetDisplayer('Cant be empty', 'Pancard no', TextCapitalization.sentences, TextInputType.number, adhaarno),
                     
                     SizedBox(height: 23,),
-                    Center(
-                      child:MaterialButton(
-                        minWidth: 350,
-                        height: 45,
-                        shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
-                        onPressed: (){
-                          dialogueBoxView();
-                        },
-                        color: Colors.blue,
-                        child: Text("Choose plan",style: TextStyle(letterSpacing: 1,
-                          color: Colors.white,fontSize: 24
-                        ),),
-                      ),),
+                    // Center(
+                    //   child:MaterialButton(
+                    //     minWidth: 350,
+                    //     height: 45,
+                    //     shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(10)),
+                    //     onPressed: (){
+                    //       dialogueBoxView();
+                    //     },
+                    //     color: Colors.blue,
+                    //     child: Text("Choose plan",style: TextStyle(letterSpacing: 1,
+                    //       color: Colors.white,fontSize: 24
+                    //     ),),
+                    //   ),),
                     SizedBox(height: 70,),
                     
                   ],

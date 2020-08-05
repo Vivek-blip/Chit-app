@@ -16,6 +16,8 @@ class Wrapper extends StatefulWidget {
 
 class _WrapperState extends State<Wrapper> {
 
+String updateChecker;
+
 Stream<DocumentSnapshot> streamupdate(User user){
   if(user==null){
     return null;
@@ -32,18 +34,18 @@ Stream<DocumentSnapshot> streamupdate(User user){
     return StreamBuilder<DocumentSnapshot>(
       stream: streamupdate(user),
       builder: (BuildContext context,AsyncSnapshot snapshot){
+
         if (user==null){
-          print(user);
-      return SigninRegistertoglerscreen();
-      }
-      else if(snapshot.data==null){
+        return SigninRegistertoglerscreen();
+        }
+        else if(snapshot.data==null){
           return Loader();
         }
         else if(snapshot.data['IsApproved']== false){
           return NotApprovedScreen();
         }
         else if(snapshot.data['IsApproved']==true){
-          return Home();
+          return Home(snapshot.data['PlanState']);
         }
         else{
           print(snapshot.data);

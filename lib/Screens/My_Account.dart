@@ -14,6 +14,7 @@ class My_Account extends StatefulWidget {
 class _My_AccountState extends State<My_Account> {
 
   int index=0;
+  
 
   selectState(UserData snp,User user){
     List<Widget>wgts=[Loader(),Listviewpg(snapshot: snp,user: user,)];
@@ -62,6 +63,9 @@ class Listviewpg extends StatefulWidget {
 
 class _ListviewpgState extends State<Listviewpg> {
   User user;
+  bool signoutButtonDisabler=true;
+
+
   UserData snapshot;
   _ListviewpgState(this.user,this.snapshot);
 
@@ -198,7 +202,11 @@ class _ListviewpgState extends State<Listviewpg> {
               color: Colors.white,fontSize: 18
             ),),
             onPressed: ()async{
-              await Authentication().signout(user.uid);
+              if(signoutButtonDisabler){
+                signoutButtonDisabler=false;
+               await Authentication().signout(user.uid);
+               signoutButtonDisabler=true;
+              }
             },
           )
         ],

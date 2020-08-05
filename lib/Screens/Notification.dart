@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:firebaseflutter2/Models/NotifiModel.dart';
@@ -140,22 +142,29 @@ class _ListviewPgState extends State<ListviewPg> {
         physics:BouncingScrollPhysics(),
         itemCount:snapshot.length,
         itemBuilder: (context, index) {
-          return Container(
-            height: 80,
-            child: Card(
-              elevation: 10,
-              shape: RoundedRectangleBorder(borderRadius:BorderRadius.circular(20),),
-              color: Color(0xfface6f6),
-              shadowColor: Color(0x552f89fc),
-              child: ListTile(
-                title: Text(snapshot[index].titledata,),
-                subtitle: Container(
-                  height: 100,
-                  child: Text(snapshot[index].contentdata,maxLines: 2,textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,)),
-                trailing: Text(snapshot[index].datedata),
-                onTap: (){
-                  showDialoguebox(snapshot[index].titledata,snapshot[index].contentdata,snapshot[index].urldata);
-                } ,
+          return ClipRRect(
+                clipBehavior: Clip.hardEdge,
+                borderRadius: BorderRadius.all(Radius.circular(20)),
+                      child: BackdropFilter(
+                filter: ImageFilter.blur(
+                      sigmaX: 10,
+                      sigmaY: 10,
+                    ),
+                  
+                child: Container(
+                  margin: EdgeInsetsGeometry.lerp(EdgeInsets.only(bottom:10), EdgeInsets.only(bottom:10), 0),
+                  color: Colors.white.withOpacity(0.3),
+                height: 80,
+                child: ListTile(
+                  title: Text(snapshot[index].titledata,),
+                  subtitle: Container(
+                    height: 100,
+                    child: Text(snapshot[index].contentdata,maxLines: 2,textAlign: TextAlign.start,overflow: TextOverflow.ellipsis,)),
+                  trailing: Text(snapshot[index].datedata),
+                  onTap: (){
+                    showDialoguebox(snapshot[index].titledata,snapshot[index].contentdata,snapshot[index].urldata);
+                  } ,
+                ),
               ),
             ),
           );

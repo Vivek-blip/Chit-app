@@ -1,3 +1,4 @@
+import 'dart:ui';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -5,44 +6,49 @@ import 'package:firebaseflutter2/Screens/Loading.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:firebaseflutter2/Screens/ChitWithPlan.dart';
 
 class Chits extends StatefulWidget {
+  final String planApproved;
+  Chits(this.planApproved);
   @override
-  _ChitsState createState() => _ChitsState();
+  _ChitsState createState() => _ChitsState(planApproved);
 }
 
 class _ChitsState extends State<Chits> {
+  String planApproved;
+  _ChitsState(this.planApproved);
   final FirebaseMessaging _fcm=FirebaseMessaging();
 
-  @override
-  void initState(){
-    super.initState();
-    _fcm.configure(
-      onMessage: (Map<String,dynamic>message)async{
-        print(message);
-        showDialog(
-                context: context,
-                builder: (context) => AlertDialog(
-                        content: ListTile(
-                        title: Text(message['notification']['title']),
-                        subtitle: Text(message['notification']['body']),
-                        ),
-                        actions: <Widget>[
-                        FlatButton(
-                            child: Text('Ok'),
-                            onPressed: () => Navigator.of(context).pop(),
-                        ),
-                    ],
-                ),
-            );
-      },
-    );
+  // @override
+  // void initState(){
+  //   super.initState();
+  //   _fcm.configure(
+  //     onMessage: (Map<String,dynamic>message)async{
+  //       print(message);
+  //       showDialog(
+  //               context: context,
+  //               builder: (context) => AlertDialog(
+  //                       content: ListTile(
+  //                       title: Text(message['notification']['title']),
+  //                       subtitle: Text(message['notification']['body']),
+  //                       ),
+  //                       actions: <Widget>[
+  //                       FlatButton(
+  //                           child: Text('Ok'),
+  //                           onPressed: () => Navigator.of(context).pop(),
+  //                       ),
+  //                   ],
+  //               ),
+  //           );
+  //     },
+  //   );
     
-  }
+  // }
 
    int index=0;
   selectState(UserData snp){
-    List<Widget>wgts=[Loader(),ChitViewpg(snapshot:snp)];
+    List<Widget>wgts=[Loader(),ChitViewpg(snapshot:snp),ChitWithPlanViewPg(snapshot:snp)];
     return wgts[index];
   }
 
@@ -64,8 +70,12 @@ class _ChitsState extends State<Chits> {
         if(snapshot.data==null){
           index=0;
         }
-        else{
+        else if(planApproved=='none'){
+          index=2;
+        }
+        else if(planApproved=='submitted'){
           index=1;
+          
         }
         return AnimatedSwitcher(
           duration: Duration(milliseconds:200),
@@ -157,7 +167,7 @@ class _ChitViewpgState extends State<ChitViewpg> {
         Image(image: AssetImage("Assets/home page.png"),),
         ],
         )),
-      Row(
+       Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           crossAxisAlignment: CrossAxisAlignment.end,
           children: <Widget>[
@@ -170,7 +180,7 @@ class _ChitViewpgState extends State<ChitViewpg> {
               boxShadow:[BoxShadow(blurRadius: 8,spreadRadius: 1,color: Color(0x552f89fc))], 
               ),
               child: Center(
-                child: Text(snapshot.chit_type,style: TextStyle(
+                child: Text('snapshot.chit_type',style: TextStyle(
                         fontSize: 22,color: Colors.grey[100],fontFamily: "Schyler",fontWeight: FontWeight.bold
                     ),),
               ),
@@ -183,7 +193,7 @@ class _ChitViewpgState extends State<ChitViewpg> {
               boxShadow:[BoxShadow(blurRadius: 8,spreadRadius: 1,color: Color(0x552f89fc))]
               ),
               child:Center(
-                child: Text("${snapshot.chit_validity} Month Chit",style: TextStyle(
+                child: Text("${'snapshot.chit_validity'} Month Chit",style: TextStyle(
                         fontSize: 22,color: Colors.grey[100],fontFamily: "Schyler",fontWeight: FontWeight.bold
                     ),),
               ),
@@ -197,3 +207,5 @@ class _ChitViewpgState extends State<ChitViewpg> {
         );
   }
 }
+
+

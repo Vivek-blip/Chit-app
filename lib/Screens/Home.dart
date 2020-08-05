@@ -7,16 +7,37 @@ import 'package:firebaseflutter2/Screens/Sc_wallet.dart';
 import 'package:firebaseflutter2/Screens/My_Account.dart';
 
 class Home extends StatefulWidget {
+  final String planApproved;
+  Home(this.planApproved);
   @override
-  _HomeState createState() => _HomeState();
+  _HomeState createState() => _HomeState(planApproved);
 }
 
 class _HomeState extends State<Home> {
+  String planApproved;
+  _HomeState(this.planApproved);
 
     final Authentication _auth=Authentication();
     int _currentIndex=0;
-    List<Widget> wgts=[Chits(),Sc_wallet(),notification(),My_Account()];
+    // List<Widget> wgts=[Chits(planApproved),Sc_wallet(),notification(),My_Account()];
 
+
+
+    Widget setScreen(int index){
+      switch (index) {
+        case 0:
+          print('switch $planApproved');
+          return Chits(planApproved);
+        case 1:
+          return Sc_wallet();
+        case 2:
+          return notification();
+        case 3:
+          return My_Account();
+        default:
+          return Chits(planApproved);
+      }
+    }
     // Widget NavigationSelector(int index){
     //   List<Widget> wgts=[Chits(),Sc_wallet(),notification(),My_Account()];
     //   return wgts[index];
@@ -31,6 +52,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
+      print('home $planApproved');
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue[500],
@@ -50,7 +72,7 @@ class _HomeState extends State<Home> {
           ),
             child: AnimatedSwitcher(
               duration: Duration(milliseconds: 200),
-              child: wgts[_currentIndex],
+              child: setScreen(_currentIndex),
               transitionBuilder: (child,animation){
                 return FadeTransition(
                   child: child,
@@ -90,9 +112,19 @@ class _HomeState extends State<Home> {
               )
             ],
             onTap: (index){
-              setState(() {
+              if(planApproved=='active'){
+                setState(() {
                 _currentIndex=index;
               });
+              }
+              else{
+                if(index!=1){
+                  setState(() {
+                _currentIndex=index;
+                  });
+                }
+              }
+              
             },
           ),
         );

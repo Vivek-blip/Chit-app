@@ -6,6 +6,7 @@ class Registration{
   FirebaseAuth _auth=FirebaseAuth.instance;
   CollectionReference _firestore=Firestore.instance.collection("brews");
   CollectionReference _dropdownref=Firestore.instance.collection("Plans");
+  CollectionReference _approval=Firestore.instance.collection('Approval');
   
 
   //Changing querysnapshot to data model
@@ -46,9 +47,9 @@ class Registration{
           'adhaarno':credentials['adhaarno'],
         }
       );
-      dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan'],credentials['selectedAmount']);
+      // dynamic planres=await addSelectedPlanToUser(result.user.uid, credentials['plan'],credentials['selectedAmount']);
       bool done=await Approval(uid:result.user.uid).addNewUid(credentials['name'],credentials['fmcToken']);
-      if(done==false||planres==null){
+      if(done==false){
         return 'null';
       }else{
         return "Sucess";
@@ -77,8 +78,11 @@ class Registration{
     await _firestore.document('$uid').updateData({
       'chit type':snp.data['chit plan'],
       'chit validity':snp.data['tenor'],
-      'monthly amt':snp.data['monthly amt'],
+      'monthly amt':(int.parse(selectedAmount)/100*10).round().toString(),
       'amount':selectedAmount
+    });
+    await _approval.document('$uid').updateData({
+      'PlanState':'submitted'
     });
     return "Sucess";
     }catch(e){
@@ -97,6 +101,7 @@ class Approval{
     try{
     await _approval.document('$uid').setData({
       'IsApproved':false,
+      'PlanState':'none',
       'name':name,
       'uid':uid,
       'fmcToken':fmcToken,
