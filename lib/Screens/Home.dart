@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Services/Auth.dart';
@@ -5,17 +6,14 @@ import 'package:firebaseflutter2/Screens/chits.dart';
 import 'package:firebaseflutter2/Screens/Notification.dart';
 import 'package:firebaseflutter2/Screens/Sc_wallet.dart';
 import 'package:firebaseflutter2/Screens/My_Account.dart';
+import 'package:provider/provider.dart';
 
 class Home extends StatefulWidget {
-  final String planApproved;
-  Home(this.planApproved);
   @override
-  _HomeState createState() => _HomeState(planApproved);
+  _HomeState createState() => _HomeState();
 }
 
 class _HomeState extends State<Home> {
-  String planApproved;
-  _HomeState(this.planApproved);
 
     final Authentication _auth=Authentication();
     int _currentIndex=0;
@@ -26,8 +24,7 @@ class _HomeState extends State<Home> {
     Widget setScreen(int index){
       switch (index) {
         case 0:
-          print('switch $planApproved');
-          return Chits(planApproved);
+          return Chits();
         case 1:
           return Sc_wallet();
         case 2:
@@ -35,7 +32,7 @@ class _HomeState extends State<Home> {
         case 3:
           return My_Account();
         default:
-          return Chits(planApproved);
+          return Chits();
       }
     }
     // Widget NavigationSelector(int index){
@@ -52,7 +49,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-      print('home $planApproved');
+      final Map plan_State=Provider.of<DocumentSnapshot>(context).data;
         return Scaffold(
           appBar: AppBar(
             backgroundColor: Colors.blue[500],
@@ -112,7 +109,7 @@ class _HomeState extends State<Home> {
               )
             ],
             onTap: (index){
-              if(planApproved=='active'){
+              if(plan_State['PlanState']=='active'){
                 setState(() {
                 _currentIndex=index;
               });

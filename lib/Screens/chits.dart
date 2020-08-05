@@ -1,4 +1,5 @@
 import 'dart:ui';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -9,15 +10,13 @@ import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebaseflutter2/Screens/ChitWithPlan.dart';
 
 class Chits extends StatefulWidget {
-  final String planApproved;
-  Chits(this.planApproved);
+
   @override
-  _ChitsState createState() => _ChitsState(planApproved);
+  _ChitsState createState() => _ChitsState();
 }
 
 class _ChitsState extends State<Chits> {
-  String planApproved;
-  _ChitsState(this.planApproved);
+  
   final FirebaseMessaging _fcm=FirebaseMessaging();
 
   // @override
@@ -63,17 +62,18 @@ class _ChitsState extends State<Chits> {
   @override
   Widget build(BuildContext context) {
     final user=Provider.of<User>(context);
-
+    final Map  planState=Provider.of<DocumentSnapshot>(context).data;
+    print('chit ${planState['PlanState']}');
     return FutureBuilder<UserData>(
         future: DatabaseService(uid:user.uid).fetchUserDoc,
         builder: (context, snapshot) {
         if(snapshot.data==null){
           index=0;
         }
-        else if(planApproved=='none'){
+        else if(planState['PlanState']=='none'){
           index=2;
         }
-        else if(planApproved=='submitted'){
+        else if(planState['PlanState']=='submitted'){
           index=1;
           
         }
