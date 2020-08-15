@@ -35,7 +35,6 @@ class Registration{
         {
           'name':credentials['name'],
           'accountbranch':credentials['accountbranch'],
-          'chit no':'test',
           'accountname':credentials['accountname'],
           'accountnumber':credentials['accountnumber'],
           'ifc code':credentials['ifccode'],
@@ -82,7 +81,8 @@ class Registration{
       'amount':selectedAmount
     });
     await _approval.document('$uid').updateData({
-      'PlanState':'submitted'
+      'PlanState':'submitted',
+      'created':Timestamp.now()
     });
     return "Sucess";
     }catch(e){
@@ -105,7 +105,7 @@ class Approval{
       'name':name,
       'uid':uid,
       'fmcToken':fmcToken,
-      'created':DateTime.now()
+      'created':Timestamp.now()
     });
     return true;
     }catch(e){

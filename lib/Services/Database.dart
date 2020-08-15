@@ -2,12 +2,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Models/NotifiModel.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'dart:io';
 
 
 class DatabaseService{
 
 final CollectionReference referance=Firestore.instance.collection('brews');
 final CollectionReference notifiReference=Firestore.instance.collection('Notification');
+final StorageReference storageReference=FirebaseStorage.instance.ref();
 final String uid;
 DatabaseService({this.uid});
 
@@ -74,11 +77,24 @@ Future<List<NotifiData>> fetchNotification() async{
  }catch(e){
    print(e);
    return null;
- }
-  
-
+ }  
 }
 
-
+      //Upload reciept file to Firestore storage 
+Future<String> uploadRecieptFile(File file)async{
+  try{
+    StorageTaskSnapshot completed=await storageReference.child('Reciepts').putFile(file).onComplete;
+    if(completed.totalByteCount>0){
+      print(completed.totalByteCount);
+      return 'uploaded';
+    }
+    else{
+      return 'error';
+    }
+  }catch(e){
+    print(e);
+    return 'error';
+  }
+}
 
 }

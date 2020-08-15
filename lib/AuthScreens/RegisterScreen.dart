@@ -247,7 +247,7 @@ final state=TextEditingController();
                     SizedBox(height: 23,),
                     textViewWidgetDisplayer('Cant be empty', 'Bank account number', TextCapitalization.none, TextInputType.number, accountnumber),
                     SizedBox(height: 23,),
-                    textViewWidgetDisplayer('Cant be empty', 'IFSC code', TextCapitalization.none, TextInputType.text, ifcCode),
+                    textViewWidgetDisplayer('Cant be empty', 'IFSC code', TextCapitalization.characters, TextInputType.text, ifcCode),
                      
                     SizedBox(height: 30,),
                     textViewWidgetDisplayer('Cant be empty', 'Mobile number', TextCapitalization.sentences, TextInputType.number, mobno),
@@ -265,7 +265,7 @@ final state=TextEditingController();
                     textViewWidgetDisplayer('Cant be empty', 'State', TextCapitalization.sentences, TextInputType.text, state),
                     
                     SizedBox(height: 30,),
-                    textViewWidgetDisplayer('Cant be empty', 'Pancard no', TextCapitalization.sentences, TextInputType.number, adhaarno),
+                    textViewWidgetDisplayer('Cant be empty', 'Pancard no', TextCapitalization.sentences, TextInputType.text, adhaarno),
                     
                     SizedBox(height: 23,),
                     // Center(

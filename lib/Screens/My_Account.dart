@@ -4,17 +4,21 @@ import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
+import 'package:firebaseflutter2/Services/Data_cache.dart';
 
 
 class My_Account extends StatefulWidget {
+  final UserdataCache cache;
+  My_Account(this.cache);
   @override
-  _My_AccountState createState() => _My_AccountState();
+  _My_AccountState createState() => _My_AccountState(cache);
 }
 
 class _My_AccountState extends State<My_Account> {
-
+  UserdataCache cache;
   int index=0;
   
+  _My_AccountState(this.cache);
 
   selectState(UserData snp,User user){
     List<Widget>wgts=[Loader(),Listviewpg(snapshot: snp,user: user,)];
@@ -22,7 +26,13 @@ class _My_AccountState extends State<My_Account> {
   }
 
   fetchDatafromDatabase(String uid)async{
-    return await DatabaseService(uid:uid).fetchUserDoc;
+     if(cache.userData!=null){
+      return cache.userData;
+    }
+    else{
+      return cache.userData=await DatabaseService(uid: uid).fetchUserDoc;
+
+    }
   }
 
   @override

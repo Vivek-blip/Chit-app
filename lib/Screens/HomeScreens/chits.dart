@@ -7,18 +7,22 @@ import 'package:firebaseflutter2/Screens/Loading.dart';
 import 'package:firebaseflutter2/Services/Database.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
-import 'package:firebaseflutter2/Screens/ChitWithPlan.dart';
+import 'package:firebaseflutter2/Screens/HomeScreens/ChitWithPlan.dart';
+import 'package:firebaseflutter2/Services/Data_cache.dart';
+import 'package:firebaseflutter2/Screens/HomeScreens/UploadReciept.dart';
 
 class Chits extends StatefulWidget {
-
+  final UserdataCache cache;
+  Chits(this.cache);
   @override
-  _ChitsState createState() => _ChitsState();
+  _ChitsState createState() => _ChitsState(cache);
 }
 
 class _ChitsState extends State<Chits> {
   
   final FirebaseMessaging _fcm=FirebaseMessaging();
-
+  UserdataCache cache;
+  _ChitsState(this.cache);
   // @override
   // void initState(){
   //   super.initState();
@@ -47,7 +51,7 @@ class _ChitsState extends State<Chits> {
 
    int index=0;
   selectState(UserData snp){
-    List<Widget>wgts=[Loader(),ChitViewpg(snapshot:snp),ChitWithPlanViewPg(snapshot:snp)];
+    List<Widget>wgts=[Loader(),ChitViewpg(snapshot:snp),ChitWithPlanViewPg(snapshot:snp),PlanNotApprovedScreen()];
     return wgts[index];
   }
 
@@ -58,14 +62,23 @@ class _ChitsState extends State<Chits> {
     print(token);
   }
 
+  Future<UserData> fetchUserData(String uid)async{
+    if(cache.userData!=null){
+      return cache.userData;
+    }
+    else{
+      return cache.userData=await DatabaseService(uid: uid).fetchUserDoc;
+
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final user=Provider.of<User>(context);
     final Map  planState=Provider.of<DocumentSnapshot>(context).data;
-    print('chit ${planState['PlanState']}');
     return FutureBuilder<UserData>(
-        future: DatabaseService(uid:user.uid).fetchUserDoc,
+        future: fetchUserData(user.uid),
         builder: (context, snapshot) {
         if(snapshot.data==null){
           index=0;
@@ -74,6 +87,10 @@ class _ChitsState extends State<Chits> {
           index=2;
         }
         else if(planState['PlanState']=='submitted'){
+          index=3;
+          
+        }
+        else if(planState['PlanState']=='active'){
           index=1;
           
         }
@@ -180,23 +197,25 @@ class _ChitViewpgState extends State<ChitViewpg> {
               boxShadow:[BoxShadow(blurRadius: 8,spreadRadius: 1,color: Color(0x552f89fc))], 
               ),
               child: Center(
-                child: Text('snapshot.chit_type',style: TextStyle(
+                child: Text(snapshot.chit_type,style: TextStyle(
                         fontSize: 22,color: Colors.grey[100],fontFamily: "Schyler",fontWeight: FontWeight.bold
                     ),),
               ),
             ),
-            Container(
+           MaterialButton(
               height: 80,
-              width: 170,
+              minWidth: 170,
               padding: EdgeInsets.all(6),
-              decoration: BoxDecoration(borderRadius: BorderRadius.circular(20),color: Color(0x4fa1eafb),
-              boxShadow:[BoxShadow(blurRadius: 8,spreadRadius: 1,color: Color(0x552f89fc))]
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+              color: Color(0x4fa1eafb),
               child:Center(
-                child: Text("${'snapshot.chit_validity'} Month Chit",style: TextStyle(
+                child: Text("Upload Reciept",style: TextStyle(
                         fontSize: 22,color: Colors.grey[100],fontFamily: "Schyler",fontWeight: FontWeight.bold
                     ),),
               ),
+              onPressed: (){
+                Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context)=>UploadRecieptScrn()));
+              },
             )
           ],
       ),
@@ -205,6 +224,35 @@ class _ChitViewpgState extends State<ChitViewpg> {
       )
       ),
         );
+  }
+}
+
+class PlanNotApprovedScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: BoxDecoration(
+                gradient: LinearGradient(
+                    colors: [Colors.indigo[400],Colors.blue[400]],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight
+                )
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Center(
+                  child: Container(
+                    width: MediaQuery.of(context).size.width/1.2,
+                    child: Text("Please wait for your selected plan to get approved",style: TextStyle(fontSize: 20,color: Colors.white,letterSpacing: 1),)),
+                ),
+                SizedBox(height: 30,),
+                 Center(
+                  child: Container(child: Text("we will send you a notification on approval",style: TextStyle(fontSize: 15,color: Colors.white,letterSpacing: 1),)),
+                ),
+              ],
+            ),
+      );
   }
 }
 
