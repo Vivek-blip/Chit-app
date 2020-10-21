@@ -4,13 +4,9 @@ import 'package:firebaseflutter2/Models/User.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/AuthScreens/Wrapper.dart';
 
-
-
-
-
 void main() => runApp(MaterialApp(
-  home: Firstpage(),
-));
+      home: Firstpage(),
+    ));
 
 class Firstpage extends StatefulWidget {
   @override
@@ -18,8 +14,7 @@ class Firstpage extends StatefulWidget {
 }
 
 class _FirstpageState extends State<Firstpage> {
-  final Authentication _auth=Authentication();
-  
+  final Authentication _auth = Authentication();
 
   @override
   Widget build(BuildContext context) {
