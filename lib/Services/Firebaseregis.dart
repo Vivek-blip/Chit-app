@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebaseflutter2/Models/Planmodel.dart';
 
 class Registration {
@@ -80,6 +81,7 @@ class Registration {
               (int.parse(selectedAmount) / 100 * 10).round().toString(),
           'amount': selectedAmount,
           'type': type,
+          'time': Timestamp.now()
         });
       } else {
         await _firestore.document('$uid').updateData({
@@ -89,6 +91,7 @@ class Registration {
               (int.parse(selectedAmount) / 100 * 10).round().toString(),
           'amount': selectedAmount,
           'type': type,
+          'time': Timestamp.now(),
           'bgchit_quantity': quanity,
         });
       }

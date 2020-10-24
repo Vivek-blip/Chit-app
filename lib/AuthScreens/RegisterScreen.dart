@@ -223,7 +223,7 @@ class _RegisterPageState extends State<RegisterPage> {
       body: Container(
         decoration: BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("Assets/background.jpeg"),
+                image: AssetImage("Assets/background.jpg"),
                 fit: BoxFit.fill,
                 alignment: Alignment.bottomCenter)),
         padding: EdgeInsets.all(10),

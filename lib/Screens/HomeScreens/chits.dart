@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/User.dart';
+import 'package:firebaseflutter2/Screens/HomeScreens/InfoCard.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
@@ -22,31 +23,6 @@ class _ChitsState extends State<Chits> {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   UserdataCache cache;
   _ChitsState(this.cache);
-  // @override
-  // void initState(){
-  //   super.initState();
-  //   _fcm.configure(
-  //     onMessage: (Map<String,dynamic>message)async{
-  //       print(message);
-  //       showDialog(
-  //               context: context,
-  //               builder: (context) => AlertDialog(
-  //                       content: ListTile(
-  //                       title: Text(message['notification']['title']),
-  //                       subtitle: Text(message['notification']['body']),
-  //                       ),
-  //                       actions: <Widget>[
-  //                       FlatButton(
-  //                           child: Text('Ok'),
-  //                           onPressed: () => Navigator.of(context).pop(),
-  //                       ),
-  //                   ],
-  //               ),
-  //           );
-  //     },
-  //   );
-
-  // }
 
   int index = 0;
   selectState(UserData snp) {
@@ -113,20 +89,19 @@ class _ChitViewpgState extends State<ChitViewpg> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Colors.indigo[400], Colors.blue[400]],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight)),
+      color: Color(0xff1B2631),
       child: Center(
           child: Padding(
-        padding: const EdgeInsets.fromLTRB(5, 15, 5, 0),
+        padding: const EdgeInsets.fromLTRB(5, 20, 5, 0),
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
+                SizedBox(
+                  height: MediaQuery.of(context).size.height / 25,
+                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
@@ -150,113 +125,26 @@ class _ChitViewpgState extends State<ChitViewpg> {
                     ),
                   ],
                 ),
-                SizedBox(
-                  height: 50,
-                ),
-                // Row(
-                // mainAxisAlignment: MainAxisAlignment.center,
-                // children: <Widget>[
-                // Text("Chit No : ",style: TextStyle(
-                // fontSize: 18,color: Colors.amber[200],fontFamily: "Schyler",fontWeight: FontWeight.bold
-                // ),),
-                // Text(snapshot.chitno,style: TextStyle(
-                // fontSize: 22,color: Colors.white,fontFamily: "Schyler"
-                // ),),
-                // ],
-                // ),
               ],
             ),
-            Container(
-                padding: EdgeInsets.fromLTRB(6, 6, 6, 0),
-                height: 238,
-                width: 280,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 30),
-                      child: Text(
-                        "welcome",
-                        style: TextStyle(
-                            fontWeight: FontWeight.w400,
-                            letterSpacing: 1.8,
-                            fontSize: 34),
-                      ),
-                    ),
-                    Image.asset(
-                      "Assets/home page.png",
-                      frameBuilder:
-                          (context, child, frame, wasSynchronouslyLoaded) {
-                        if (wasSynchronouslyLoaded) {
-                          return child;
-                        }
-                        return AnimatedOpacity(
-                          child: child,
-                          opacity: frame == null ? 0 : 1,
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.easeOut,
-                        );
-                      },
-                    ),
-                  ],
-                )),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: <Widget>[
-                SizedBox(
-                  height: 0,
-                ),
-                Container(
-                  height: 80,
-                  width: 170,
-                  padding: EdgeInsets.all(7),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0x4fa1eafb),
-                    boxShadow: [
-                      BoxShadow(
-                          blurRadius: 8,
-                          spreadRadius: 1,
-                          color: Color(0x552f89fc))
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      snapshot.chit_type,
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.grey[100],
-                          fontFamily: "Schyler",
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                MaterialButton(
-                  height: 80,
-                  minWidth: 170,
-                  padding: EdgeInsets.all(6),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20)),
-                  color: Color(0x4fa1eafb),
-                  child: Center(
-                    child: Text(
-                      "Upload Reciept",
-                      style: TextStyle(
-                          fontSize: 22,
-                          color: Colors.grey[100],
-                          fontFamily: "Schyler",
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  onPressed: () {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (BuildContext context) =>
-                            UploadRecieptScrn()));
-                  },
-                )
-              ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 18,
             ),
+            Text(
+              "Reg number",
+              style: TextStyle(color: Colors.grey[400], fontSize: 15),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 70,
+            ),
+            Text(
+              snapshot.regno,
+              style: TextStyle(color: Colors.white, fontSize: 25),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 15,
+            ),
+            InfoCard(userData: snapshot),
           ],
         ),
       )),
@@ -268,11 +156,7 @@ class PlanNotApprovedScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-          gradient: LinearGradient(
-              colors: [Colors.indigo[400], Colors.blue[400]],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight)),
+      color: Color(0xff283747),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -281,6 +165,7 @@ class PlanNotApprovedScreen extends StatelessWidget {
                 width: MediaQuery.of(context).size.width / 1.2,
                 child: Text(
                   "Please wait for your selected plan to get approved",
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                       fontSize: 20, color: Colors.white, letterSpacing: 1),
                 )),

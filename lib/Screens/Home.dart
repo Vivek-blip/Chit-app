@@ -9,6 +9,8 @@ import 'package:firebaseflutter2/Screens/My_Account.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/Services/Data_cache.dart';
 
+import 'HomeScreens/UploadReciept.dart';
+
 class Home extends StatefulWidget {
   @override
   _HomeState createState() => _HomeState();
@@ -45,7 +47,12 @@ class _HomeState extends State<Home> {
   // }
 
   String AppbarTextSeletor(int index) {
-    List<String> txt = ["Chit", "SC Wallet", "Notification", "My Account"];
+    List<String> txt = [
+      "Ensure direct money",
+      "Wallet",
+      "Notification",
+      "My Account"
+    ];
     return txt[index];
   }
 
@@ -53,21 +60,28 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     final Map plan_State = Provider.of<DocumentSnapshot>(context).data;
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.blue[500],
-        elevation: 10,
-        centerTitle: true,
-        title: Text(
-          AppbarTextSeletor(_currentIndex),
-          style: TextStyle(fontSize: 28),
+      extendBody: true,
+      appBar: PreferredSize(
+        preferredSize: Size.fromHeight(50),
+        child: AppBar(
+          backgroundColor: Color(0xff283747),
+          leading: CircleAvatar(
+            radius: 10,
+            backgroundColor: Colors.black,
+            backgroundImage: AssetImage(
+              "Assets/AppIcon.jpeg",
+            ),
+          ),
+          elevation: 10,
+          centerTitle: true,
+          title: Text(
+            AppbarTextSeletor(_currentIndex),
+            style: TextStyle(fontSize: 28),
+          ),
         ),
       ),
       body: Container(
-        decoration: BoxDecoration(
-            gradient: LinearGradient(
-                colors: [Colors.indigo[400], Colors.blue[400]],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight)),
+        color: Color(0xff1B2631),
         child: AnimatedSwitcher(
           duration: Duration(milliseconds: 200),
           child: setScreen(_currentIndex),
@@ -79,46 +93,51 @@ class _HomeState extends State<Home> {
           },
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: Colors.grey[200],
-        unselectedItemColor: Color(0xff59d4e8),
-        elevation: 0,
-        iconSize: 28,
-        showUnselectedLabels: true,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            backgroundColor: Color(0xff2d6cdf),
-            icon: Icon(Icons.attach_money),
-            label: "Chits",
-          ),
-          BottomNavigationBarItem(
-            backgroundColor: Color(0xff2d6cdf),
-            icon: Icon(Icons.account_balance_wallet),
-            label: "Wallet",
-          ),
-          BottomNavigationBarItem(
-              backgroundColor: Color(0xff2d6cdf),
-              icon: Icon(Icons.notifications),
-              label: "Notification"),
-          BottomNavigationBarItem(
-              backgroundColor: Color(0xff2d6cdf),
-              icon: Icon(Icons.account_circle),
-              label: "My Account")
-        ],
-        onTap: (index) {
-          if (plan_State['PlanState'] == 'active') {
-            setState(() {
-              _currentIndex = index;
-            });
-          } else {
-            if (index != 1) {
+      bottomNavigationBar: SizedBox(
+        height: 50,
+        child: BottomNavigationBar(
+          backgroundColor: Color(0xff283747),
+          selectedItemColor: Colors.grey[200],
+          unselectedItemColor: Color(0xff59d4e8),
+          elevation: 0,
+          iconSize: 20,
+          showUnselectedLabels: true,
+          currentIndex: _currentIndex,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              backgroundColor: Color(0xff283747),
+              icon: Icon(Icons.attach_money),
+              label: "Chits",
+            ),
+            BottomNavigationBarItem(
+              backgroundColor: Color(0xff283747),
+              icon: Icon(Icons.account_balance_wallet),
+              label: "Wallet",
+            ),
+            BottomNavigationBarItem(
+                backgroundColor: Color(0xff283747),
+                icon: Icon(Icons.notifications),
+                label: "Notification"),
+            BottomNavigationBarItem(
+                backgroundColor: Color(0xff283747),
+                icon: Icon(Icons.account_circle),
+                label: "My Account")
+          ],
+          onTap: (index) {
+            if (plan_State['PlanState'] == 'active') {
               setState(() {
                 _currentIndex = index;
               });
+            } else {
+              if (index != 1) {
+                setState(() {
+                  _currentIndex = index;
+                });
+              }
             }
-          }
-        },
+          },
+        ),
       ),
     );
   }
