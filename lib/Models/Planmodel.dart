@@ -1,6 +1,12 @@
 class plan {
-  String chitPlan, monthlyAmt, tenor, type;
+  String chitPlan, monthlyAmt, tenor, type, eMI;
   List amount;
 
-  plan({this.chitPlan, this.amount, this.monthlyAmt, this.tenor, this.type});
+  plan(
+      {this.chitPlan,
+      this.amount,
+      this.monthlyAmt,
+      this.tenor,
+      this.type,
+      this.eMI});
 }

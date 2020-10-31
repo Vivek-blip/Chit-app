@@ -23,6 +23,29 @@ class _ChitWithPlanViewPgState extends State<ChitWithPlanViewPg> {
   _ChitWithPlanViewPgState(this.snapshot);
   int bhagya_chit_quantity = 3;
 
+  String termsAndConditions =
+      '''Chit due has to be paid before 10th every month. If not, you will not be able to participate in the Chit of that month. 
+
+Chit draw winning amount will be paid to you by cash or bank transfer within 3 working days. 
+
+The Chit amount will be credited to the account number given in the Cheque Leaf. 
+
+Winners of the Bhagya chit monthly draw can withdraw the entire chit amount. 
+
+In case of non-withdrawal, only half of the monthly installment will need to be paid in the subsequent months. 
+
+Nonwithdrawn money will be paid in the month in which the Bhagya Chit ends, 
+
+A person can participate in minimum 3 chits and maximum no limit. 
+
+The Chit amount will be credited to the account number given in the Cheque Leaf. 
+
+ 6 chit draws are conducted in a month. 
+
+Individuals withdrawing the Bhagya Chit amount are required to provide two cheque leaves as collateral. 
+
+        (Not applicable for non-withdrawals)''';
+
   fetchPlansFromDatabase() async {
     if (_chachedplans.isEmpty) {
       return _chachedplans = await Registration().dropdownplans();
@@ -61,6 +84,59 @@ class _ChitWithPlanViewPgState extends State<ChitWithPlanViewPg> {
     }
   }
 
+  Widget termsAndCondDialog(User user, int _index, BuildContext context) {
+    return AlertDialog(
+      contentPadding: EdgeInsets.fromLTRB(8, 8, 8, 0),
+      title: Text("Terms & Conditions"),
+      content: SingleChildScrollView(
+        child: Column(
+          children: [
+            Text(termsAndConditions),
+            RaisedButton(
+                color: Colors.green[400],
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.all(Radius.circular(15))),
+                child: _loading
+                    ? SpinKitCircle(
+                        color: Colors.white,
+                      )
+                    : Text("Accept",
+                        style: TextStyle(color: Colors.white, fontSize: 20)),
+                onPressed: () async {
+                  Navigator.of(context).pop();
+                  if (!_loading) {
+                    setState(() {
+                      _loading = true;
+                    });
+                    dynamic result = await Registration().addSelectedPlanToUser(
+                        user.uid,
+                        _chachedplans[_index].chitPlan,
+                        _selectedAmt.isEmpty
+                            ? _chachedplans[_index].amount[0]
+                            : _selectedAmt,
+                        _chachedplans[_index].type == "edmchit"
+                            ? "edmchit"
+                            : "bhagyachit",
+                        bhagya_chit_quantity.toString());
+
+                    if (result == 'Sucess') {
+                      setState(() {
+                        _loading = false;
+                      });
+                    } else {
+                      setState(() {
+                        _loading = false;
+                        _submitButtonText = 'Retry';
+                      });
+                    }
+                  }
+                })
+          ],
+        ),
+      ),
+    );
+  }
+
   Widget containerWidgetSwitcher(User user) {
     if (widget_data[0] == 0) {
       return Column(
@@ -97,7 +173,7 @@ class _ChitWithPlanViewPgState extends State<ChitWithPlanViewPg> {
                         color: Colors.blue.withOpacity(0.2),
                         child: ListTile(
                           subtitle: Text(
-                              'Tenor - ${snapshot.data[i].tenor} months',
+                              'Tenor - expires on ${snapshot.data[i].tenor}',
                               style: TextStyle(color: Colors.white)),
                           title: Text(snapshot.data[i].chitPlan,
                               style: TextStyle(color: Colors.white)),
@@ -249,7 +325,7 @@ class _ChitWithPlanViewPgState extends State<ChitWithPlanViewPg> {
                           ),
                     Text(
                       _chachedplans[_index].type == "edmchit"
-                          ? '₹ ${_selectedAmt.isEmpty ? ((int.parse(_chachedplans[_index].amount[0]) / 100 * 10).round()).toString() : ((int.parse(_selectedAmt) / 100 * 10).round()).toString()}'
+                          ? '₹ ${_chachedplans[_index].eMI}'
                           : "${bhagya_chit_quantity.toString()}",
                       style: TextStyle(
                           color: Colors.limeAccent,
@@ -287,33 +363,39 @@ class _ChitWithPlanViewPgState extends State<ChitWithPlanViewPg> {
                       : Text(_submitButtonText,
                           style: TextStyle(color: Colors.white, fontSize: 20)),
                   onPressed: () async {
-                    if (!_loading) {
-                      setState(() {
-                        _loading = true;
-                      });
-                      dynamic result = await Registration()
-                          .addSelectedPlanToUser(
-                              user.uid,
-                              _chachedplans[_index].chitPlan,
-                              _selectedAmt.isEmpty
-                                  ? _chachedplans[_index].amount[0]
-                                  : _selectedAmt,
-                              _chachedplans[_index].type == "edmchit"
-                                  ? "edmchit"
-                                  : "bhagyachit",
-                              bhagya_chit_quantity.toString());
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext acontext) {
+                          return termsAndCondDialog(user, _index, acontext);
+                        });
 
-                      if (result == 'Sucess') {
-                        setState(() {
-                          _loading = false;
-                        });
-                      } else {
-                        setState(() {
-                          _loading = false;
-                          _submitButtonText = 'Retry';
-                        });
-                      }
-                    }
+                    // if (!_loading) {
+                    //   setState(() {
+                    //     _loading = true;
+                    //   });
+                    //   dynamic result = await Registration()
+                    //       .addSelectedPlanToUser(
+                    //           user.uid,
+                    //           _chachedplans[_index].chitPlan,
+                    //           _selectedAmt.isEmpty
+                    //               ? _chachedplans[_index].amount[0]
+                    //               : _selectedAmt,
+                    //           _chachedplans[_index].type == "edmchit"
+                    //               ? "edmchit"
+                    //               : "bhagyachit",
+                    //           bhagya_chit_quantity.toString());
+
+                    //   if (result == 'Sucess') {
+                    //     setState(() {
+                    //       _loading = false;
+                    //     });
+                    //   } else {
+                    //     setState(() {
+                    //       _loading = false;
+                    //       _submitButtonText = 'Retry';
+                    //     });
+                    //   }
+                    // }
                   },
                 )
               ],

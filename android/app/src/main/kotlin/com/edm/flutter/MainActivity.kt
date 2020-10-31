@@ -1,4 +1,4 @@
-package com.example.firebaseflutter2
+package com.edm.flutter
 
 import androidx.annotation.NonNull;
 import io.flutter.embedding.android.FlutterActivity

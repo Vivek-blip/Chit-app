@@ -104,9 +104,9 @@ class _InfoCardState extends State<InfoCard> {
                     ),
                     color: Colors.blue[400],
                     onPressed: () {
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              UploadRecieptScrn()));
+                      // Navigator.of(context).push(MaterialPageRoute(
+                      //     builder: (BuildContext context) =>
+                      //         UploadRecieptScrn()));
                     },
                   )
                 ],
@@ -146,6 +146,17 @@ class _InfoCardState extends State<InfoCard> {
             Divider(
               color: Colors.grey[300],
             ),
+            Text(
+              "Plan",
+              style: TextStyle(color: Colors.grey[400], fontSize: 20),
+            ),
+            Text(
+              userData.chit_type,
+              style: TextStyle(color: Colors.white, fontSize: 22),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height / 80,
+            ),
             Padding(
               padding: const EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Row(
@@ -155,22 +166,11 @@ class _InfoCardState extends State<InfoCard> {
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
                       Text(
-                        "Plan",
-                        style: TextStyle(color: Colors.grey[400], fontSize: 15),
-                      ),
-                      Text(
-                        userData.chit_type,
-                        style: TextStyle(color: Colors.white, fontSize: 18),
-                      ),
-                      SizedBox(
-                        height: MediaQuery.of(context).size.height / 80,
-                      ),
-                      Text(
                         "principal amount",
                         style: TextStyle(color: Colors.grey[400], fontSize: 15),
                       ),
                       Text(
-                        userData.amount,
+                        "₹${userData.amount}",
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                       SizedBox(
@@ -181,7 +181,7 @@ class _InfoCardState extends State<InfoCard> {
                         style: TextStyle(color: Colors.grey[400], fontSize: 15),
                       ),
                       Text(
-                        userData.monthlyAmt,
+                        "₹${userData.monthlyAmt}",
                         style: TextStyle(color: Colors.white, fontSize: 18),
                       ),
                     ],
@@ -193,7 +193,7 @@ class _InfoCardState extends State<InfoCard> {
                         style: TextStyle(color: Colors.grey[400], fontSize: 15),
                       ),
                       Text(
-                        "12-10-2020",
+                        userData.chit_validity,
                         style: TextStyle(color: Colors.grey[400], fontSize: 15),
                       ),
                     ],

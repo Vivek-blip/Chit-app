@@ -18,6 +18,7 @@ class Registration {
         amount: doc.data['amount'],
         monthlyAmt: doc.data['monthly amt'],
         tenor: doc.data['tenor'],
+        eMI: doc.data['emi'],
         type: doc.data['type'],
       ));
     }
@@ -78,7 +79,7 @@ class Registration {
           'chit type': snp.data['chit plan'],
           'chit validity': snp.data['tenor'],
           'monthly amt':
-              (int.parse(selectedAmount) / 100 * 10).round().toString(),
+              (int.parse(snp.data['emi']) * int.parse(quanity)).toString(),
           'amount': selectedAmount,
           'type': type,
           'time': Timestamp.now()
@@ -88,7 +89,7 @@ class Registration {
           'chit type': snp.data['chit plan'],
           'chit validity': snp.data['tenor'],
           'monthly amt':
-              (int.parse(selectedAmount) / 100 * 10).round().toString(),
+              (int.parse(snp.data['emi']) * int.parse(quanity)).toString(),
           'amount': selectedAmount,
           'type': type,
           'time': Timestamp.now(),
