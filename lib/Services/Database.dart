@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebaseflutter2/Models/RecieptModel.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Models/NotifiModel.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +12,8 @@ class DatabaseService {
   final CollectionReference referance = Firestore.instance.collection('brews');
   final CollectionReference notifiReference =
       Firestore.instance.collection('Notification');
+  final CollectionReference recieptStorageReference =
+      Firestore.instance.collection('Reciepts');
   final StorageReference storageReference = FirebaseStorage.instance.ref();
   final String uid;
   DatabaseService({this.uid});
@@ -58,6 +63,30 @@ class DatabaseService {
     }
   }
 
+  List<RecieptDataList> recieptDataListMaker(List data) {
+    List<RecieptDataList> _list = [];
+    data.forEach((element) {
+      var date = element['timestamp'].toDate();
+      String formatedDate = DateFormat("dd-MM-yy").format(date);
+      _list.add(RecieptDataList(
+          chitno: element['chitnos'],
+          fileurl: element['fileUrl'],
+          timeuploaded: formatedDate));
+    });
+    return _list;
+  }
+
+  Future getUploadedReciepts() async {
+    try {
+      DocumentSnapshot recieptModelData =
+          await recieptStorageReference.document("$uid").get();
+      return RecieptModel(
+          recieptdata: recieptDataListMaker(recieptModelData.data['data']));
+    } catch (e) {
+      return 'null';
+    }
+  }
+
   Future<UserData> get fetchUserDoc async {
     DocumentSnapshot qsnp = await referance.document('$uid').get();
     return snapshotToUserdata(qsnp);
@@ -99,12 +128,33 @@ class DatabaseService {
   }
 
   //Upload reciept file to Firestore storage
-  Future<String> uploadRecieptFile(File file) async {
+  Future<String> uploadRecieptFile(
+      File file, String chitnos, String regno) async {
     try {
-      StorageTaskSnapshot completed =
-          await storageReference.child('Reciepts').putFile(file).onComplete;
+      Timestamp timestamp = Timestamp.now();
+      String currentTime = timestamp.seconds.toString();
+      StorageTaskSnapshot completed = await storageReference
+          .child('PaymentReciepts/$uid/$currentTime')
+          .putFile(file)
+          .onComplete;
       if (completed.totalByteCount > 0) {
-        print(completed.totalByteCount);
+        if (await recieptStorageReference
+            .document('$uid')
+            .get()
+            .then((value) => !value.exists)) {
+          await recieptStorageReference
+              .document('$uid')
+              .setData({"data": [], "regno": regno});
+        }
+        String downloadUrl = await completed.ref.getDownloadURL();
+        dynamic recieptData = {
+          'timestamp': timestamp,
+          'fileUrl': downloadUrl,
+          'chitnos': chitnos
+        };
+        await recieptStorageReference.document('$uid').updateData(({
+              'data': FieldValue.arrayUnion([recieptData])
+            }));
         return 'uploaded';
       } else {
         return 'error';

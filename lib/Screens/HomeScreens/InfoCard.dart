@@ -5,7 +5,8 @@ import 'UploadReciept.dart';
 
 class InfoCard extends StatefulWidget {
   final UserData userData;
-  InfoCard({this.userData});
+  final String uid;
+  InfoCard({this.userData, this.uid});
   @override
   _InfoCardState createState() => _InfoCardState(userData);
 }
@@ -13,26 +14,36 @@ class InfoCard extends StatefulWidget {
 class _InfoCardState extends State<InfoCard> {
   UserData userData;
   _InfoCardState(this.userData);
+  int selectedChitNo = 0;
+  List<bool> chitToggleList = [];
 
   List<Widget> generateTextWigits() {
     List<Widget> list = [];
     for (int i = 0; i < userData.chit_nos.length; i++) {
       list.add(Text("${userData.chit_nos[i]}"));
     }
+    List<bool> _lst = [];
+    for (int i = 0; i < userData.chit_nos.length; i++) {
+      if (i == selectedChitNo) {
+        _lst.add(true);
+      } else {
+        _lst.add(false);
+      }
+    }
+    chitToggleList = _lst;
     return list;
   }
 
-  List<bool> generateIsselctedList() {
-    List<bool> list = [];
-    for (int i = 0; i < userData.chit_nos.length; i++) {
-      if (i == 0) {
-        list.add(true);
-      } else {
-        list.add(false);
-      }
-    }
-    return list;
-  }
+  // List<bool> generateIsselctedList() {
+  //   for (int i = 0; i < userData.chit_nos.length; i++) {
+  //     if (i == 0) {
+  //       chitToggleList.add(true);
+  //     } else {
+  //       chitToggleList.add(false);
+  //     }
+  //   }
+  //   return chitToggleList;
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -104,9 +115,13 @@ class _InfoCardState extends State<InfoCard> {
                     ),
                     color: Colors.blue[400],
                     onPressed: () {
-                      // Navigator.of(context).push(MaterialPageRoute(
-                      //     builder: (BuildContext context) =>
-                      //         UploadRecieptScrn()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (BuildContext context) => UploadRecieptScrn(
+                                uid: widget.uid,
+                                chitnos:
+                                    userData.chit_nos.toString().toString(),
+                                regno: userData.regno,
+                              )));
                     },
                   )
                 ],
@@ -129,9 +144,11 @@ class _InfoCardState extends State<InfoCard> {
                               borderRadius: BorderRadius.circular(10),
                               color: Colors.white,
                               children: generateTextWigits(),
-                              isSelected: generateIsselctedList(),
+                              isSelected: chitToggleList,
                               onPressed: (index) {
-                                setState(() {});
+                                setState(() {
+                                  selectedChitNo = index;
+                                });
                               },
                             ),
                           ),

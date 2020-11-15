@@ -25,10 +25,13 @@ class _ChitsState extends State<Chits> {
   _ChitsState(this.cache);
 
   int index = 0;
-  selectState(UserData snp) {
+  selectState(UserData snp, String uid) {
     List<Widget> wgts = [
       Loader(),
-      ChitViewpg(snapshot: snp),
+      ChitViewpg(
+        snapshot: snp,
+        uid: uid,
+      ),
       ChitWithPlanViewPg(snapshot: snp),
       PlanNotApprovedScreen()
     ];
@@ -66,7 +69,7 @@ class _ChitsState extends State<Chits> {
           }
           return AnimatedSwitcher(
             duration: Duration(milliseconds: 200),
-            child: selectState(snapshot.data),
+            child: selectState(snapshot.data, user.uid),
             transitionBuilder: (child, animation) {
               return FadeTransition(opacity: animation, child: child);
             },
@@ -77,7 +80,8 @@ class _ChitsState extends State<Chits> {
 
 class ChitViewpg extends StatefulWidget {
   final UserData snapshot;
-  ChitViewpg({this.snapshot});
+  final String uid;
+  ChitViewpg({this.snapshot, this.uid});
   @override
   _ChitViewpgState createState() => _ChitViewpgState(snapshot);
 }
@@ -144,7 +148,10 @@ class _ChitViewpgState extends State<ChitViewpg> {
             SizedBox(
               height: MediaQuery.of(context).size.height / 15,
             ),
-            InfoCard(userData: snapshot),
+            InfoCard(
+              userData: snapshot,
+              uid: widget.uid,
+            ),
           ],
         ),
       )),
