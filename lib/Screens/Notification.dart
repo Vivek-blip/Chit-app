@@ -6,7 +6,7 @@ import 'package:firebaseflutter2/Models/NotifiModel.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/Models/User.dart';
 import 'package:firebaseflutter2/Screens/Loading.dart';
-import 'package:flutter_webview_plugin/flutter_webview_plugin.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class notification extends StatefulWidget {
   @override
@@ -37,27 +37,30 @@ class _notificationState extends State<notification> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<User>(context);
-    return FutureBuilder(
-        future: fetchNotification(user),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.data == null) {
-            index = 0;
-          } else if (snapshot.data[0].contentdata == null) {
-            index = 2;
-          } else {
-            index = 1;
-          }
-          return AnimatedSwitcher(
-            duration: Duration(milliseconds: 200),
-            child: selectState(snapshot.data),
-            transitionBuilder: (child, animation) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          );
-        });
+    return Scaffold(
+      backgroundColor: Color(0xff283747),
+      body: FutureBuilder(
+          future: fetchNotification(user),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.data == null) {
+              index = 0;
+            } else if (snapshot.data[0].contentdata == null) {
+              index = 2;
+            } else {
+              index = 1;
+            }
+            return AnimatedSwitcher(
+              duration: Duration(milliseconds: 200),
+              child: selectState(snapshot.data),
+              transitionBuilder: (child, animation) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          }),
+    );
   }
 }
 
@@ -135,13 +138,10 @@ class _ListviewPgState extends State<ListviewPg> {
                               'Open link',
                               style: TextStyle(color: Colors.white),
                             ),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => Webpage(
-                                            url: url,
-                                          )));
+                            onPressed: () async {
+                              if (await canLaunch(url)) {
+                                await launch(url);
+                              }
                             },
                           ),
                         ],
@@ -190,28 +190,6 @@ class _ListviewPgState extends State<ListviewPg> {
           ),
         );
       },
-    );
-  }
-}
-
-class Webpage extends StatefulWidget {
-  final String url;
-  Webpage({this.url});
-  @override
-  _WebpageState createState() => _WebpageState(url);
-}
-
-class _WebpageState extends State<Webpage> {
-  String url;
-  _WebpageState(this.url);
-
-  @override
-  Widget build(BuildContext context) {
-    return WebviewScaffold(
-      appBar: AppBar(
-        title: Text('EDM webview'),
-      ),
-      url: url,
     );
   }
 }

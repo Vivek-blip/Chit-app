@@ -47,7 +47,7 @@ android {
         applicationId "com.edm.flutter"
         minSdkVersion 21
         targetSdkVersion 29
-        versionCode 6.toInteger()
+        versionCode 7.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -31,7 +31,7 @@ class _WrapperState extends State<Wrapper> {
     } else if (snapshot.data['IsApproved'] == false) {
       return NotApprovedScreen();
     } else if (snapshot.data['IsApproved'] == true) {
-      return Home();
+      return Home(user.uid);
     } else {
       print(snapshot.data);
       return Loader();

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Loader extends StatefulWidget {
   @override
@@ -44,6 +45,25 @@ class UpdateApp extends StatelessWidget {
               style: TextStyle(color: Colors.white, fontSize: 18),
               textAlign: TextAlign.center,
             ),
+            SizedBox(
+              height: 40,
+            ),
+            MaterialButton(
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5)),
+              color: Color(0xff283747),
+              onPressed: () async {
+                String _url =
+                    "https://play.google.com/store/apps/details?id=com.edm.flutter&hl=en-GB";
+                if (await canLaunch(_url)) {
+                  await launch(_url);
+                }
+              },
+              child: Text(
+                "Update",
+                style: TextStyle(color: Colors.white, fontSize: 20),
+              ),
+            )
           ],
         )),
       ),

@@ -9,9 +9,9 @@ import 'package:firebaseflutter2/Screens/My_Account.dart';
 import 'package:provider/provider.dart';
 import 'package:firebaseflutter2/Services/Data_cache.dart';
 
-import 'HomeScreens/UploadReciept.dart';
-
 class Home extends StatefulWidget {
+  final String uid;
+  Home(this.uid);
   @override
   _HomeState createState() => _HomeState();
 }
@@ -32,9 +32,9 @@ class _HomeState extends State<Home> {
       case 0:
         return Chits(cache);
       case 1:
-        return Sc_wallet();
+        return Sc_wallet(widget.uid);
       case 2:
-        return notification();
+        return null;
       case 3:
         return My_Account(cache);
       default:
@@ -47,12 +47,7 @@ class _HomeState extends State<Home> {
   // }
 
   String AppbarTextSeletor(int index) {
-    List<String> txt = [
-      "Ensure direct money",
-      "Wallet",
-      "Notification",
-      "My Account"
-    ];
+    List<String> txt = ["ENSURE DIRECT MONEY", "Wallet", "Plans", "My Account"];
     return txt[index];
   }
 
@@ -66,17 +61,27 @@ class _HomeState extends State<Home> {
         child: AppBar(
           backgroundColor: Color(0xff283747),
           leading: CircleAvatar(
-            radius: 10,
+            radius: 1,
             backgroundColor: Colors.black,
             backgroundImage: AssetImage(
               "Assets/AppIcon.jpeg",
             ),
           ),
+          actions: [
+            IconButton(
+                icon: Icon(Icons.notifications),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (BuildContext context) => notification()));
+                })
+          ],
           elevation: 10,
           centerTitle: true,
           title: Text(
             AppbarTextSeletor(_currentIndex),
-            style: TextStyle(fontSize: 28),
+            style: TextStyle(fontSize: 18, fontFamily: "Schyler"),
           ),
         ),
       ),
@@ -117,8 +122,8 @@ class _HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(
                 backgroundColor: Color(0xff283747),
-                icon: Icon(Icons.notifications),
-                label: "Notification"),
+                icon: Icon(Icons.my_library_books_rounded),
+                label: "Plans"),
             BottomNavigationBarItem(
                 backgroundColor: Color(0xff283747),
                 icon: Icon(Icons.account_circle),

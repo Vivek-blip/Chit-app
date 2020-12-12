@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebaseflutter2/Models/RecieptModel.dart';
 import 'package:firebaseflutter2/Models/User.dart';
@@ -14,6 +12,8 @@ class DatabaseService {
       Firestore.instance.collection('Notification');
   final CollectionReference recieptStorageReference =
       Firestore.instance.collection('Reciepts');
+  final CollectionReference _walletReference =
+      Firestore.instance.collection('Wallet');
   final StorageReference storageReference = FirebaseStorage.instance.ref();
   final String uid;
   DatabaseService({this.uid});
@@ -60,6 +60,15 @@ class DatabaseService {
         regno: snapshot.data['registration id'],
         type: snapshot.data['type'],
       );
+    }
+  }
+
+  Future<List> fetchWalletInfo(String uid) async {
+    try {
+      DocumentSnapshot snapshot = await _walletReference.document(uid).get();
+      return snapshot.data['data'];
+    } catch (e) {
+      return null;
     }
   }
 

@@ -104,7 +104,7 @@ class _ChitViewpgState extends State<ChitViewpg> {
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: <Widget>[
                 SizedBox(
-                  height: MediaQuery.of(context).size.height / 25,
+                  height: MediaQuery.of(context).size.height / 45,
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -132,7 +132,7 @@ class _ChitViewpgState extends State<ChitViewpg> {
               ],
             ),
             SizedBox(
-              height: MediaQuery.of(context).size.height / 18,
+              height: MediaQuery.of(context).size.height / 22,
             ),
             Text(
               "Reg number",

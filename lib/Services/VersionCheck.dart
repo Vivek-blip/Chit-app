@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class VersionCheck {
-  final double version = 1.2;
+  final double version = 1.3;
   CollectionReference _versionRef = Firestore.instance.collection("Version");
 
   Future<bool> versionUptoDate() async {
